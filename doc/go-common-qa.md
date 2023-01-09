@@ -1,18 +1,32 @@
 # java 人员学 go 的一般性问题
 
-## 作用域
+## 工作区
 
-go 没有与 java 对等的 public, private, protected,friendly 关键字。要想跨文件使用 go 代码，名字的首字母必须大写。
+工作区可以实现多个模块的管理，主要用于多个模块在开发和发布间的依赖问题。
+
+**go官方规范**：工作区由 go.work 文件定义。可覆盖子目录中 go.mod 中的依赖。
+
+参考：[Go 1.18 工作区模式最佳实践 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/495832968)
+
+## 模块
+
+可作为独立的项目，或者作为`工作区`的子项目。
+
+对依赖进行管理是其核心职能。
+
+**go官方规范**：包由 go.mod 文件定义。
 
 ## 包
 
-一个目录下得所有文件的包名必须使用同一个包名，并保证包名和目录名相同。
+模块按照按照功能不同进行目录和文件的划分，这些目录便是`包`。
+
+**go官方规范**：一个目录下得所有文件的包名必须**使用同一个包名**，并保证包名和目录名相同，这一点区别于 java 中的一个文件一个包。
 
 引用本模块内部包时，需要以模块名作为前缀+包的完全路径。
 
 引用本地其他模块时，可以在模块名前附加相对路径。
 
-go mod tidy 会自动整理依赖关系，包括[间接依赖](https://blog.csdn.net/juzipidemimi/article/details/104441398)。
+**go mod tidy 会自动整理依赖关系**，包括[间接依赖](https://blog.csdn.net/juzipidemimi/article/details/104441398)。**注意** ，go.mod 中的 // indirect 不要手工编辑， go mod tidy 会自动维护。
 
 参考：[使用go module导入本地包 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/109828249)
 
@@ -49,21 +63,41 @@ func main() {
 
 ### 意料之中的问题
 
-[Catch Panics in Go | Delft Stack](https://www.delftstack.com/howto/go/catch-panics-in-golang/)
+go 的 panic 函数与 java 的 threw 语句效果差不多，但 go 只有在不可预期的问题上才建议使用 panic,  对于可预期的错误请优先使用错误处理机制，因为错误处理机制会更轻量与简洁。
 
-panic 
+**要点**：
 
-打印到文件
+- panic 会立即退出当前函数
 
-recover
+- 要想在 panic 时做一些补救措施，请在 defer 函数中调用 recover() 函数，注意recover() 函数只可以在 defer 函数内使用。
+
+- 如果想在 defer 函数内修改返回值，请对当前函数的**返回值进行命名**，并在defer函数中进行修改。
+
+- 打印调用栈：引入 "runtime/debug"，在代码中调用 debug.PrintStack()。
 
 ## 如何处理继承
+
+而 go 没有类，也不支持继承，go 用组合来代替继承，从语言层面降低组件间的耦合，从而降低复杂度。
+
+## 任意类型与类型判断
+
+go 使用空接口来代表任意类型
+
+```go
+interface{} 
+```
+
+ 
 
 ## 指针
 
 在使用指针时，需要注意：指针本身不为 nil 但指针的值可能为 nil，这经常会导致空指针 panic!。
 
 ## 关闭资源
+
+## 对象比较
+
+字符串间可以直接用 ”==“ 进行比较，不用想 java 那样调用 equal 函数。
 
 ## 依赖注入
 
@@ -79,17 +113,20 @@ recover
 
 ## 没有 synchronized
 
-## 与 maven 对应的职能如何实现
-
-- 依赖管理
-
-- 打包静态资源
+## 打包静态资源
 
 ## 测试
 
-单元测试需单独建文件，和要测试的 go文件目录相同，文件名格式为：[待测文件]_test.go
+**go官方规范**：单元测试文件和要测试的 go文件目录相同，后缀为：_test.go
 
 go 自身没有测试用的断言，建议引入依赖 github.com/stretchr/testify
+
+执行项目中的所有单元测试
+
+```shell
+# 注意  go test -v ./... 在本项目中不工作
+go test -v ./src/...
+```
 
 参考[Go的测试框架 - 简书 (jianshu.com)](https://www.jianshu.com/p/fe2f21d4e46d)。包含单元测试、断言、mock，基准测试（性能测试）等
 

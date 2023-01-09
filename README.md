@@ -1,12 +1,14 @@
 # Readme
 
-本项目主要介绍 go 的实施规范，并对规范进行了部分实现。另附 Go 相关资料：
+本项目主要介绍 go 的实施规范，并对规范进行了部分实现。
 
-[go 相对于 java 的优势](doc/go-advantage.md)
+Go 相关资料：
 
-[java 人员学 go 的一般性问题](doc/go-common-qa.md)
+- [go 相对于 java 的优势](doc/go-advantage.md)
 
-[查找需要依赖的包](https://pkg.go.dev/)
+- [java 人员学 go 的一般性问题](doc/go-common-qa.md)，相关示例位于 src/internal/service目录下
+
+- [查找需要依赖的包](https://pkg.go.dev/)
 
 ## go 项目的目录结构
 
@@ -40,9 +42,3 @@
 - go.mod 位与 src 目录内，会自动屏蔽 import 对 src 的引用。
 
 参考[golang-standards / project-layout](https://gitcode.net/mirrors/golang-standards/project-layout/-/blob/master/README_zh.md)
-
-## 错误与异常处理
-
-单元测试
-
-[Go的测试框架 - 简书 (jianshu.com)](https://www.jianshu.com/p/fe2f21d4e46d)
