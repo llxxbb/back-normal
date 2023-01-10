@@ -1,0 +1,22 @@
+package extend
+
+import (
+	"cdel/demo/Normal/internal/service/inheritance"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
+
+func TestIncrement(t *testing.T) {
+	var i MyInt = 10
+	// 调用扩展的方法
+	rtn := i.increment()
+	assert.Equal(t, 11, rtn)
+}
+
+func TestHello(t *testing.T) {
+	dog := MyAnimal{inheritance.Mammal{Name: "dog", Age: 3}}
+	// 调用扩展的方法
+	rtn := dog.hello()
+	assert.Equal(t, "dog: hello", rtn)
+}

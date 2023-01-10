@@ -6,7 +6,7 @@ Go 相关资料：
 
 - [go 相对于 java 的优势](doc/go-advantage.md)
 
-- [java 人员学 go 的一般性问题](doc/go-common-qa.md)，相关示例位于 src/internal/service目录下
+- [java 人员学 go 的一般性问题](doc/go-common-qa.md)，相关示例大都位于 src/internal/service目录下，
 
 - [查找需要依赖的包](https://pkg.go.dev/)
 
