@@ -1,5 +1,7 @@
 # java 人员学 go 的一般性问题
 
+这里仅仅是 [A Tour of Go 中文版](https://tour.go-zh.org) 的补充，请优先学期 Tour 中的内容
+
 ## 语言基础问题
 
 ### 工作区
@@ -52,13 +54,19 @@ go 没有类，也没有继承的概念，go 用组合来模拟继承。
 
 **隐式接口**
 
+java 需要显式实现接口，而 go 则是隐式的，没有类似于 implement 关键字。只要看起来像鸭子，游起来像鸭子，叫起来像鸭子，那它就是鸭子，不需要显式说明它是鸭子：参考[鸭子类型](https://morven.life/posts/golang-interface-and-composition/#:~:text=Go%20%E6%8E%A5%E5%8F%A3%E4%B8%8E%E7%BB%84%E5%90%88%201%20Go%20%E6%8E%A5%E5%8F%A3%E4%B8%8E%E9%B8%AD%E5%AD%90%E7%B1%BB%E5%9E%8B%20%E4%BB%80%E4%B9%88%E6%98%AF%E2%80%9C%E9%B8%AD%E5%AD%90%E7%B1%BB%E5%9E%8B%E2%80%9D%EF%BC%9F%20...%202)。
+
+如下面示例中 MyError 对 error 接口的实现为隐式接口实现。
+
+示例： src/internal/service/error
+
 **任意类型与类型判断**
 
-go 使用空接口来代表任意类型
+在 go 中**空接口**(没有任何方法的接口)有一个广泛而特殊的用法，用于表示任何类型！**因为依据go的隐式接口实现规则，每个自定义类型都会默认实现空接口**。
 
-```go
-interface{} 
-```
+示例： src/internal/service/anyType
+
+参考：[反射 (google.cn)](https://golang.google.cn/blog/laws-of-reflection)
 
 ### 指针
 
