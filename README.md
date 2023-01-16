@@ -10,12 +10,6 @@ Go 相关资料：
 
 - [查找需要依赖的包](https://pkg.go.dev/)
 
-## 使用说明
-
-运行本项目的所有单元测试
-
-> go test ./src/...
-
 ## go 项目的目录结构
 
 ```
@@ -48,3 +42,30 @@ Go 相关资料：
 - go.mod 位与 src 目录内，会自动屏蔽 import 对 src 的引用。
 
 参考[golang-standards / project-layout](https://gitcode.net/mirrors/golang-standards/project-layout/-/blob/master/README_zh.md)
+
+## 关于公共包项目
+
+因为 go 获取依赖项目是直接从源代码服务器上拉取的，所以 go.mod 文件中 `module` 指令必须与源码地址保持一致。
+
+有下面的要点：
+
+- 当主版本号变更时需为新的主版本号建立独立分支。
+
+- 项目版本号为规范的格式：v[主版本号].[次版本号].[小版本号]
+
+- 项目版本号以 源代码服务器上的 tag 形式体现.
+
+`module` 示例：
+
+```go-mod
+// 0 或 1 版本 
+module gitlab.cdel.local/[yourProject]
+// 2 版本，下面的 v2 是一个新的分支
+module gitlab.cdel.local/[yourProject]/v2
+```
+
+## 关于示例中的测试文件
+
+运行本项目的所有单元测试
+
+> go test ./src/...

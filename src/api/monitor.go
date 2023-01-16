@@ -1,3 +1,14 @@
 package api
 
-var Hello = "你好"
+import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+)
+
+func detMonitor(r *gin.Engine) {
+	// monitor
+	r.GET("/version", func(c *gin.Context) {
+		c.String(http.StatusOK, "pong")
+	})
+}

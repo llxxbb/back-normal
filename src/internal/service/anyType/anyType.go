@@ -8,7 +8,7 @@ import (
 // 空接口示例，下面的 any 等价于 interface{}
 func PrintType(v any) string {
 	_, ok := v.(string)
-	if ok == true {
+	if ok {
 		return fmt.Sprintf("type: string, value: %v", v)
 	} else {
 		t := reflect.TypeOf(v)
