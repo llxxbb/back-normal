@@ -35,6 +35,7 @@ func InitLogger(path string, prod bool) {
 		// 控制台输出
 		zapcore.NewCore(
 			zapcore.NewConsoleEncoder(encoderConsoleCfg),
+			// zapcore.NewJSONEncoder(encoderConsoleCfg),
 			zapcore.Lock(os.Stdout),
 			zap.LevelEnablerFunc(func(lvl zapcore.Level) bool {
 				return lvl < zapcore.ErrorLevel

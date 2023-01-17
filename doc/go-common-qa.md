@@ -161,17 +161,21 @@ go 内置的 log 库缺少级别和分割能力，本示例使用 [zap](https://
 
 zap要点：
 
-- 日志有两种输出方式：易用（可将对象直接输出为 json）的 zap.S() 和 高性能的 zap.L()
+- 本示例重置日志 zap 的两个全局 log 对象（默认为空）：易用（可将对象直接输出为 json）的 zap.S() 和 高性能的 zap.L()。
 
-- 高性能的 logger 只支持结构化的日志输出
+- zap.L() 只支持简单格式输出，或者手动构造结构化日志输出。
 
-- 缺省输出会缓存，所以需要时常落盘： defer zap.L().Sync()
+- zap 缺省会使用缓存，所以需要时常落盘： defer zap.L().Sync()
 
 **时间格式化**：格式串必须是**go语言的诞生时间**，**01/02 03:04:05PM ‘06 -0700** ，我们常用的格式为： "2006-01-02 15:04:05.000"。 参考[Golang时间格式化 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/145009400)
 
-示例： src/tool/logger.go
+**已知问题**：输出 json 时只输出 value 不输出 key，且忽略任何空值对象的输出，这是zap的涉及理念，如实在想解决，提供两个方法：
 
-**已知问题**：输出 json 时只输出 value 不输出 key。解决方法，自行序列化（性能不是很好）,因为 zap 之所以性能好，就是因为 It includes a reflection-free, zero-allocation JSON encoder.
+- 自行序列化（性能不是很好）,因为 zap 之所以性能好，就是因为 It includes a reflection-free, zero-allocation JSON encoder.
+
+- 用 zapcore.NewJSONEncoder 替换 zapcore.NewConsoleEncoder，但整条日志就是个JSON。
+
+示例： src/tool/logger.go
 
 ### 配置、环境变量的读取
 
