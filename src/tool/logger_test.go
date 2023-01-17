@@ -12,7 +12,7 @@ type user struct {
 }
 
 func TestLog(t *testing.T) {
-	InitLogger("/web/loges/127.0.0.1-back-normal", false)
+	InitLogger("/web/logs/127.0.0.1-back-normal", false)
 	u := user{name: "lxb", age: 100}
 	// 简易的 Sugar 方式输出，可以直接输出对象
 	zap.S().Info("user info by sugarLogger: ", u)

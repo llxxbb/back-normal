@@ -10,7 +10,7 @@
             "request": "launch",
             "mode": "auto",
             "env": {
-                "env":"debug"
+                "env":"dev"
             },
             "program": "${workspaceFolder}/src/cmd/main.go"
         },

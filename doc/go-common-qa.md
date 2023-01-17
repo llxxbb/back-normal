@@ -159,7 +159,7 @@ go 的 panic 函数与 java 的 threw 语句效果差不多，但 go 只有在�
 
 go 内置的 log 库缺少级别和分割能力，本示例使用 [zap](https://github.com/uber-go/zap) + [lumberjack](https://github.com/natefinch/lumberjack)。[Frequently Asked Questions](https://github.com/uber-go/zap/blob/v1.24.0/FAQ.md), [go zap自定义日志输出格式](https://www.jianshu.com/p/fc90ea603ef2)
 
-zap要点：
+**使用说明**：
 
 - 本示例重置日志 zap 的两个全局 log 对象（默认为空）：易用（可将对象直接输出为 json）的 zap.S() 和 高性能的 zap.L()。
 
@@ -179,23 +179,27 @@ zap要点：
 
 ### 配置、环境变量的读取
 
-这里使用 [viper](https://github.com/spf13/viper) ，它提供了下面的功能（来源于 viper）：
+这里使用 [viper](https://github.com/spf13/viper) 封装了一个全局的配置对象 config.C，此对象在使用时会自动初始化。使用者可视情况自行增加其中的配置项。
 
-- 设置默认值
+**使用说明**：
 
-- 从JSON，TOML，YAML，HCL，Envfile和Java属性properties配置文件读取
+- 配置文件于可执行文件位于同一目录，配置文件名格式：config_[profile].yml。其中 profile 的值依据环境变量 env 的值来决定。env 的缺省值为 product，不需要显式指定。
 
-- 监控配置文件变更并重新加载（可选）
+- config_default.yml 提供缺省的配置，各个环境不同的配置项请放到 profile 对应的配置文件中去。
 
-- 从环境变量读取
+- 配置项优先级：env > profile > default
 
-- 从远程配置系统（etcd 或 Consul）读取配置
+**增加配置项说明**：
 
-- 从命令行标志读取
+- 在 `Config` 结构中增加属性
 
-- 从缓冲区阅读
+- 在 fieldMap 中将 配置项与 `Config` 中的字段建立关系，用于反射赋值。
+
+- 目前只支持字符串类型的配置项，如需其它类型请自行扩展
 
 示例： src/config
+
+参考：[巧用 viper 实现多环境配置](https://www.codercto.com/a/32660.html)
 
 ### Web 服务
 

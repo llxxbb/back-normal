@@ -8,10 +8,8 @@ import (
 
 var db = make(map[string]string)
 
-func setupRouter() *gin.Engine {
+func SetupRouter() *gin.Engine {
 	r := gin.Default()
-
-
 
 	// Get user value
 	r.GET("/user/:name", func(c *gin.Context) {
@@ -59,11 +57,6 @@ func setupRouter() *gin.Engine {
 		}
 	})
 
+	gin.SetMode(gin.ReleaseMode)
 	return r
-}
-
-func main() {
-	r := setupRouter()
-	// Listen and Server in 0.0.0.0:8080
-	r.Run(":8080")
 }

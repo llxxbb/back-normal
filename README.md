@@ -20,9 +20,12 @@ Go 相关资料：
  │ go.mod          // 项目依赖管理
  ├─api             // OpenAPI/Swagger 规范，JSON 模式文件，协议定义文件。
  ├─assert          // 图像、徽标等
- ├─cmd             // 如有多个项目启动文件，可建此目录
+ ├─cmd             // 项目启动文件，包括配置文件
  │ main.go         // 项目启动文件，如只有一个可直接挂到 src 下
- ├─config          // 运行所需的配置文件
+ │ config_default.yml // 缺省配置文件
+ │ config_product.yml // 生产环境配置文件
+ │ config_dev.yml        // 开发环境配置文件
+ ├─config          // 配置文件处理相关
  ├─internal        // 项目内部使用的代码
  │ ├─dao           // 访问数据库的代码
  │ ├─entity        // 数据实体
