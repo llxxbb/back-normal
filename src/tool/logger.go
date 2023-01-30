@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	logTmFmtWithMS = "2006-01-02 15:04:05.000"
+	LogTmFmtWithMS = "2006-01-02 15:04:05.000"
 	maxBackups     = 3
 	maxAge         = 10 // 保留10天
 )
@@ -67,7 +67,7 @@ func newConfig() zapcore.EncoderConfig {
 
 	// 自定义时间输出格式
 	customTimeEncoder := func(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
-		enc.AppendString(t.Format(logTmFmtWithMS))
+		enc.AppendString(t.Format(LogTmFmtWithMS))
 	}
 
 	// 自定义文件：行号输出项

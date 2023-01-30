@@ -3,11 +3,12 @@ module cdel/demo/Normal
 go 1.19
 
 require (
-	github.com/gin-gonic/gin v1.8.2
-	github.com/spf13/viper v1.14.0
-	github.com/stretchr/testify v1.8.1
-	go.uber.org/zap v1.24.0
-	gopkg.in/natefinch/lumberjack.v2 v2.0.0
+	github.com/gin-gonic/gin v1.8.2	// web framework
+	github.com/spf13/viper v1.14.0 // read variety config files
+	github.com/stretchr/testify v1.8.1 // test framework, include assert, mock etc.
+	go.uber.org/zap v1.24.0 // Blazing fast, structured, leveled logging
+	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // writing logs to rolling files
+	github.com/gin-contrib/zap v0.1.0 // zap middleware for Gin
 )
 
 require (
@@ -35,6 +36,8 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/subosito/gotenv v1.4.1 // indirect
 	github.com/ugorji/go/codec v1.2.8 // indirect
+	go.opentelemetry.io/otel v1.10.0 // indirect
+	go.opentelemetry.io/otel/trace v1.10.0 // indirect
 	go.uber.org/atomic v1.10.0 // indirect
 	go.uber.org/multierr v1.9.0 // indirect
 	golang.org/x/crypto v0.5.0 // indirect

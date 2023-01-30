@@ -1,20 +1,27 @@
 package api
 
 import (
+	"cdel/demo/Normal/config"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 var db = make(map[string]string)
 
 func SetupRouter() *gin.Engine {
-	r := gin.Default()
+	if config.C.GinRelease {
+		gin.SetMode(gin.ReleaseMode)
+	}
+	r := gin.New()
+	r.SetTrustedProxies(nil)
 
 	// Get user value
 	r.GET("/user/:name", func(c *gin.Context) {
 		user := c.Params.ByName("name")
 		value, ok := db[user]
+		zap.L().Debug("/user is called")
 		if ok {
 			c.JSON(http.StatusOK, gin.H{"user": user, "value": value})
 		} else {
@@ -57,6 +64,5 @@ func SetupRouter() *gin.Engine {
 		}
 	})
 
-	gin.SetMode(gin.ReleaseMode)
 	return r
 }

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"reflect"
+	"strconv"
 
 	"github.com/spf13/viper"
 )
@@ -15,16 +16,18 @@ type Config struct {
 	ProjectName    string // 项目名称
 	ProjectVersion string // 项目本身的版本信息
 	Env            string // 部署环境
-	Host           string // 实例部署位置
 	Port           string // 对外服务的端口号
-	WorkPath       string
-	LogPath        string
+	GinRelease     bool   // gin 是否以 release 模式工作
+	LogRoot        string // 保存日志的根路径
+
+	// 注意：下面的配置项目在运行时自动设置，无需配置。
+	Host     string // 实例部署位置
+	WorkPath string // 项目启动所在的目录
+	LogPath  string // 日志输出的位置，由 log.root 主机IP 项目名 等组成
 }
 
 const (
-	KEY_ENV      = "env"
-	KEY_LOG_ROOT = "log.root"
-
+	KEY_ENV     = "env"
 	VAL_PRODUCT = "product"
 )
 
@@ -33,6 +36,8 @@ var fieldMap = map[string]string{
 	"prj.name":    "ProjectName",
 	"prj.version": "ProjectVersion",
 	"port":        "Port",
+	"gin.release": "GinRelease",
+	"log.root":    "LogRoot",
 }
 
 const (
@@ -50,16 +55,12 @@ func new() (c Config) {
 	c = Config{}
 	c.Env = viper.GetString(KEY_ENV)
 	c.mergeFile("")
-	cEnv := c // 备份环境变量中的配置项
 
 	// 读取缺省配置文件
 	c.mergeFile(_fileName + _nameSplitter + _fileDefault)
 
 	// 读取 profile 对应的配置文件
 	c.mergeFile(_fileName + _nameSplitter + c.Env)
-
-	// 用环境变量中的配置项进行覆盖
-	c.mergeAnother(&cEnv)
 
 	// 设置工作目录、日志目录等
 	c.setWdAndLogPath()
@@ -77,7 +78,7 @@ func (c *Config) setWdAndLogPath() {
 	if e != nil {
 		panic(e)
 	}
-	c.LogPath = c.LogPath + "/" + c.Host + "-" + c.ProjectName
+	c.LogPath = c.LogRoot + "/" + c.Host + "-" + c.ProjectName
 }
 
 // 读取并合并配置项
@@ -97,24 +98,34 @@ func (c *Config) mergeFile(path string) {
 	cV := reflect.ValueOf(c).Elem()
 	for k, v := range fieldMap {
 		fV := viper.GetString(k)
-		if fV != "" {
-			cV.FieldByName(v).Set(reflect.ValueOf(&fV).Elem())
+		if fV == "" {
+			continue
 		}
-	}
-}
-
-// 读取并合并配置项
-func (c *Config) mergeAnother(another *Config) {
-	cSelf := reflect.ValueOf(c).Elem()
-	cAnother := reflect.ValueOf(another).Elem()
-
-	for _, v := range fieldMap {
-		fV := cAnother.FieldByName(v)
-		if !fV.IsValid() {
-			panic("can't find field: " + v)
+		var rV reflect.Value
+		var err error
+		switch cV.FieldByName(v).Type().Name() {
+		case "string":
+			rV = reflect.ValueOf(fV)
+		case "bool":
+			rtn, e := strconv.ParseBool(fV)
+			if e == nil {
+				rV = reflect.ValueOf(rtn)
+			} else {
+				err = e
+			}
+		case "int":
+			rtn, e := strconv.ParseInt(fV, 0, 32)
+			if e == nil {
+				rV = reflect.ValueOf(rtn)
+			} else {
+				err = e
+			}
+		default:
+			panic(fmt.Sprintf("config item: %s, unhandled type.", k))
 		}
-		if fV.String() != "" {
-			cSelf.FieldByName(v).Set(fV)
+		if err != nil {
+			panic(fmt.Sprintf("config item: %s, value type error. %v", k, err))
 		}
+		cV.FieldByName(v).Set(rV)
 	}
 }

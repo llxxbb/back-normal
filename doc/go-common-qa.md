@@ -66,7 +66,9 @@ As [Rob Pike points out](https://go-proverbs.github.io/), "The bigger the inter
 
 ### 没有枚举
 
-go 没有枚举定义，可用常量定义来模拟
+go 没有枚举定义，可用常量定义来模拟，参考：[Declare enum in Go](https://gosamples.dev/enum/#:~:text=In%20Go%2C%20there%20is%20no%20enum%20data%20type,to%20check%20how%20to%20declare%20enum%20in%20Go.)
+
+示例：src/internal/service/enum
 
 ### 深度复制
 
@@ -169,6 +171,8 @@ go 内置的 log 库缺少级别和分割能力，本示例使用 [zap](https://
 
 **时间格式化**：格式串必须是**go语言的诞生时间**，**01/02 03:04:05PM ‘06 -0700** ，我们常用的格式为： "2006-01-02 15:04:05.000"。 参考[Golang时间格式化 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/145009400)
 
+**过滤器**：本示例并没有集成此功能，如有需要可参考：[moul/zapfilter](https://github.com/moul/zapfilter)
+
 **已知问题**：输出 json 时只输出 value 不输出 key，且忽略任何空值对象的输出，这是zap的涉及理念，如实在想解决，提供两个方法：
 
 - 自行序列化（性能不是很好）,因为 zap 之所以性能好，就是因为 It includes a reflection-free, zero-allocation JSON encoder.
@@ -187,7 +191,7 @@ go 内置的 log 库缺少级别和分割能力，本示例使用 [zap](https://
 
 - config_default.yml 提供缺省的配置，各个环境不同的配置项请放到 profile 对应的配置文件中去。
 
-- 配置项优先级：env > profile > default
+- 配置项优先级：profile > default
 
 **增加配置项说明**：
 
@@ -195,7 +199,7 @@ go 内置的 log 库缺少级别和分割能力，本示例使用 [zap](https://
 
 - 在 fieldMap 中将 配置项与 `Config` 中的字段建立关系，用于反射赋值。
 
-- 目前只支持字符串类型的配置项，如需其它类型请自行扩展
+- 目前只支持 string, bool, int 类型的配置项，如需其它类型请自行扩展
 
 示例： src/config
 
@@ -205,11 +209,17 @@ go 内置的 log 库缺少级别和分割能力，本示例使用 [zap](https://
 
 这里以 https://gin-gonic.com/ 为例进行演示
 
+集成 zap，集成代码位于: src/cmd/main.go,参考：[gin-contrib/zap](https://github.com/gin-contrib/zap), [Gin框架中使用zap日志库](https://blog.csdn.net/qq_33591055/article/details/113955016)
+
+
+
 ### 依赖注入
 
 go 基本上不会有依赖注入问题 ，因为**Go 在设计上更倾向于明确的、显式的编程风格**
 
-实际上是利用 go 的代码生成能力
+实际上是利用 go 的代码生成能力。
+
+如果怀念 Java 的 spring 可参考：[go-spring/go-spring](https://github.com/go-spring/go-spring)，但**不建议**，因为违法显示编程原则。
 
 ### 注解
 
@@ -218,8 +228,6 @@ Java 支持注解， go 原生支持的不好，一般情况下不建议使用�
 ### json 处理
 
 ### 数据库编程
-
-### 读取配置文件
 
 ### 打包静态资源
 
