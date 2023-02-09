@@ -8,6 +8,7 @@ type Animal struct {
 	Mammal
 }
 
+// 哺乳动物
 type Mammal struct {
 	Name string
 	Age  int

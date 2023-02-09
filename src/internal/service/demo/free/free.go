@@ -1,3 +1,4 @@
+// 释放资源示例
 package free
 
 import "os"
@@ -7,7 +8,7 @@ func fileSize(filename string) int64 {
 	if err != nil {
 		return 0
 	}
-	// 延迟调用Close, 此时Close不会被调用
+	// 延迟调用, 此时Close不会被调用，调用 return 时触发
 	defer f.Close()
 	info, err := f.Stat()
 	if err != nil {

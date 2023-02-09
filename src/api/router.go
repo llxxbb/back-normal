@@ -2,10 +2,10 @@ package api
 
 import (
 	"cdel/demo/Normal/config"
-	"net/http"
+	"cdel/demo/Normal/internal/service"
+	"cdel/demo/Normal/internal/service/demo"
 
 	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
 )
 
 var db = make(map[string]string)
@@ -17,52 +17,18 @@ func SetupRouter() *gin.Engine {
 	r := gin.New()
 	r.SetTrustedProxies(nil)
 
-	// Get user value
-	r.GET("/user/:name", func(c *gin.Context) {
-		user := c.Params.ByName("name")
-		value, ok := db[user]
-		zap.L().Debug("/user is called")
-		if ok {
-			c.JSON(http.StatusOK, gin.H{"user": user, "value": value})
-		} else {
-			c.JSON(http.StatusOK, gin.H{"user": user, "status": "no value"})
-		}
-	})
+	// 用于监控
+	r.GET("/monitorDB/monitor", service.IsAlive)
+	r.GET("/monitorDB/monitor.shtml", service.IsAlive)
+	r.GET("isAlive", service.IsAlive)
 
-	// Authorized group (uses gin.BasicAuth() middleware)
-	// Same than:
-	// authorized := r.Group("/")
-	// authorized.Use(gin.BasicAuth(gin.Credentials{
-	//	  "foo":  "bar",
-	//	  "manu": "123",
-	//}))
-	authorized := r.Group("/", gin.BasicAuth(gin.Accounts{
-		"foo":  "bar", // user:foo password:bar
-		"manu": "123", // user:manu password:123
-	}))
+	// 项目版本查询
+	r.GET("/version", service.ProjectVersion)
 
-	/* example curl for /admin with basicauth header
-	   Zm9vOmJhcg== is base64("foo:bar")
-
-		curl -X POST \
-	  	http://localhost:8080/admin \
-	  	-H 'authorization: Basic Zm9vOmJhcg==' \
-	  	-H 'content-type: application/json' \
-	  	-d '{"value":"bar"}'
-	*/
-	authorized.POST("admin", func(c *gin.Context) {
-		user := c.MustGet(gin.AuthUserKey).(string)
-
-		// Parse JSON
-		var json struct {
-			Value string `json:"value" binding:"required"`
-		}
-
-		if c.Bind(&json) == nil {
-			db[user] = json.Value
-			c.JSON(http.StatusOK, gin.H{"status": "ok"})
-		}
-	})
-
+	gDemo := r.Group("/demo")
+	{
+		gDemo.POST("/v1", demo.V1)
+		gDemo.POST("/v2", demo.V2)
+	}
 	return r
 }

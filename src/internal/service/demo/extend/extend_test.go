@@ -1,7 +1,7 @@
 package extend
 
 import (
-	"cdel/demo/Normal/internal/service/inheritance"
+	"cdel/demo/Normal/internal/service/demo/inheritance"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
