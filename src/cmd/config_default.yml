@@ -5,3 +5,14 @@ prj:
 port: 80
 
 log.root: /web/logs
+
+mysql:
+  user: dev_user
+  password: dev_password
+  address: 192.168.172.50:6008
+  db: doorman
+  conns:
+    maxOpen: 40
+    minIdle: 2
+    timeout: 500ms
+    readTimeout: 3s

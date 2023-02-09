@@ -6,11 +6,17 @@ import (
 	"os"
 	"reflect"
 	"strconv"
+	"strings"
+	"time"
 
+	"github.com/go-sql-driver/mysql"
 	"github.com/spf13/viper"
+	"go.uber.org/zap"
 )
 
 var C = new()
+
+// var C = Config{}
 
 type Config struct {
 	ProjectName    string // 项目名称
@@ -24,6 +30,8 @@ type Config struct {
 	Host     string // 实例部署位置
 	WorkPath string // 项目启动所在的目录
 	LogPath  string // 日志输出的位置，由 log.root 主机IP 项目名 等组成
+	Mysql    mysql.Config
+	// MysqlPool
 }
 
 const (
@@ -38,6 +46,15 @@ var fieldMap = map[string]string{
 	"port":        "Port",
 	"gin.release": "GinRelease",
 	"log.root":    "LogRoot",
+
+	"mysql.user":              "Mysql.User",
+	"mysql.password":          "Mysql.Passwd",
+	"mysql.address":           "Mysql.Addr",
+	"mysql.db":                "Mysql.DBName",
+	"mysql.conns.timeout":     "Mysql.ReadTimeout",
+	"mysql.conns.readTimeout": "Mysql.Timeout",
+	// "mysql.conns.maxOpen":     "LogRoot",
+	// "mysql.conns.minIdle":     "LogRoot",
 }
 
 const (
@@ -87,7 +104,8 @@ func (c *Config) mergeFile(path string) {
 	if path != "" {
 		viper.SetConfigName(path)      // name of config file (without extension)
 		viper.SetConfigType(_fileType) // REQUIRED if the config file does not have the extension in the name
-		viper.AddConfigPath(".")       // optionally look for config in the working directory
+		viper.AddConfigPath(".")       // look for config in the working directory
+		viper.AddConfigPath("../cmd")  // used for unit test
 		err := viper.ReadInConfig()    // Find and read the config file
 		if err != nil {                // Handle errors reading the config file
 			panic(fmt.Errorf("fatal error: read config file: %s, %w", path, err))
@@ -95,37 +113,77 @@ func (c *Config) mergeFile(path string) {
 	}
 
 	// 利用反射进行赋值
-	cV := reflect.ValueOf(c).Elem()
-	for k, v := range fieldMap {
-		fV := viper.GetString(k)
-		if fV == "" {
+	cfgType := reflect.ValueOf(c).Elem()
+	// mKey: map key, mVal map value
+	for mKey, mVal := range fieldMap {
+		fileVal := viper.GetString(mKey)
+		if fileVal == "" {
 			continue
 		}
 		var rV reflect.Value
 		var err error
-		switch cV.FieldByName(v).Type().Name() {
+		field := findField(&cfgType, mVal)
+		typeName := field.Type().Name()
+		switch typeName {
 		case "string":
-			rV = reflect.ValueOf(fV)
+			rV = reflect.ValueOf(fileVal)
 		case "bool":
-			rtn, e := strconv.ParseBool(fV)
+			rtn, e := strconv.ParseBool(fileVal)
 			if e == nil {
 				rV = reflect.ValueOf(rtn)
 			} else {
 				err = e
 			}
 		case "int":
-			rtn, e := strconv.ParseInt(fV, 0, 32)
+			rtn, e := strconv.ParseInt(fileVal, 0, 32)
+			if e == nil {
+				rV = reflect.ValueOf(rtn)
+			} else {
+				err = e
+			}
+		case "Duration":
+			rtn, e := time.ParseDuration(fileVal)
 			if e == nil {
 				rV = reflect.ValueOf(rtn)
 			} else {
 				err = e
 			}
 		default:
-			panic(fmt.Sprintf("config item: %s, unhandled type.", k))
+			panic(fmt.Sprintf("config item: %s, unhandled type.", mKey))
 		}
 		if err != nil {
-			panic(fmt.Sprintf("config item: %s, value type error. %v", k, err))
+			panic(fmt.Sprintf("config item: %s, value type error. %v", mKey, err))
 		}
-		cV.FieldByName(v).Set(rV)
+		field.Set(rV)
 	}
+}
+
+func findField(parent *reflect.Value, field string) *reflect.Value {
+	fs := strings.Split(field, ".")
+	rtn := parent.FieldByName(fs[0])
+	if len(fs) == 1 {
+		return &rtn
+	} else {
+		return findField(&rtn, field[len(fs[0])+1:])
+	}
+}
+
+func Print() {
+	zap.L().Info("++++++++++++++ config info begin: ++++++++++++++")
+	zap.L().Info("-- ", zap.String("ProjectName", C.ProjectName))
+	zap.L().Info("-- ", zap.String("ProjectVersion", C.ProjectVersion))
+	zap.L().Info("-- ", zap.Bool("GinRelease", C.GinRelease))
+	zap.L().Info("------------ mysql ------------")
+	zap.L().Info("-- ", zap.String("addr", C.Mysql.Addr))
+	zap.L().Info("-- ", zap.String("addr", C.Mysql.DBName))
+	zap.L().Info("-- ", zap.String("timeout", C.Mysql.Timeout.String()))
+	zap.L().Info("-- ", zap.String("readTimeout", C.Mysql.ReadTimeout.String()))
+	zap.L().Info("------------ server info ------------")
+	zap.L().Info("-- ", zap.String("Env", C.Env))
+	zap.L().Info("-- ", zap.String("Host", C.Host))
+	zap.L().Info("-- ", zap.String("Port", C.Port))
+	zap.L().Info("------------ path info ------------")
+	zap.L().Info("-- ", zap.String("WorkPath", C.WorkPath))
+	zap.L().Info("-- ", zap.String("LogPath", C.LogPath))
+	zap.L().Info("++++++++++++++ config info end: ++++++++++++++")
 }

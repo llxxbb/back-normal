@@ -12,9 +12,7 @@ import (
 
 func main() {
 	tool.InitLogger(config.C.LogPath, config.C.Env == config.VAL_PRODUCT)
-	zap.L().Info("----------- config info begin: -----------")
-	zap.S().Info(config.C)
-	zap.L().Info("----------- config info end: -----------")
+	config.Print()
 	defer zap.L().Sync()
 
 	r := api.SetupRouter()

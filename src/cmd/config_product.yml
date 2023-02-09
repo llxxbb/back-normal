@@ -1,3 +1,8 @@
 port: 19000
 
 gin.release: true
+
+mysql:
+  user: dev_user
+  password: dev_password
+  address: 192.168.172.50:6008
