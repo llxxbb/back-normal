@@ -6,7 +6,7 @@ require (
 	github.com/gin-contrib/zap v0.1.0 // zap middleware for Gin
 	github.com/gin-gonic/gin v1.8.2 // web framework
 	github.com/go-sql-driver/mysql v1.7.0
-	github.com/spf13/viper v1.15.0 // read variety config files
+	github.com/llxxbb/go-BaseConfig v0.1.1
 	github.com/stretchr/testify v1.8.1 // test framework, include assert, mock etc.
 	gitlab.cdel.local/platform/go/platform-common v0.1.2
 	go.uber.org/zap v1.24.0 // Blazing fast, structured, leveled logging
@@ -35,6 +35,7 @@ require (
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/spf13/viper v1.15.0 // indirect
 	github.com/subosito/gotenv v1.4.2 // indirect
 	github.com/ugorji/go/codec v1.2.9 // indirect
 	go.opentelemetry.io/otel v1.13.0 // indirect

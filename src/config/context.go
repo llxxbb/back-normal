@@ -5,11 +5,11 @@ import "database/sql"
 var CTX Context
 
 type Context struct {
-	C      *Config
+	C      *DemoConfig
 	DemoDB *sql.DB
 }
 
-func (c *Context) Init(cfg *Config) {
+func (c *Context) Init(cfg *DemoConfig) {
 	c.C = cfg
 	c.DemoDB = DemoDBInit(&cfg.Mysql)
 }

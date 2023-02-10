@@ -1,6 +1,6 @@
 package entity
 
-import "database/sql"
+// import "database/sql"
 
 type TmpTable struct {
 	Id   int    `json:"id"`
@@ -9,6 +9,6 @@ type TmpTable struct {
 	T2   string `json:"t2"`
 }
 
-func ToTmpTable(row *sql.Row) *TmpTable {
+// func ToTmpTable(row *sql.Row) *TmpTable {
 
-}
+// }

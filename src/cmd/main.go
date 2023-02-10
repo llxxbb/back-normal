@@ -5,6 +5,8 @@ import (
 	"cdel/demo/Normal/config"
 	"cdel/demo/Normal/tool"
 
+	bc "github.com/llxxbb/go-BaseConfig/config"
+
 	ginzap "github.com/gin-contrib/zap"
 
 	"go.uber.org/zap"
@@ -12,9 +14,10 @@ import (
 
 func main() {
 	// 初始化配置
-	cfg := config.NewConfig()
+	cfg := config.DemoConfig{}
+	bc.FillConfig(&cfg, &cfg.BaseConfig)
 	// 初始化日志
-	tool.InitLogger(cfg.LogPath, cfg.Env == config.VAL_PRODUCT)
+	tool.InitLogger(cfg.LogPath, cfg.Env == bc.VAL_PRODUCT)
 	defer zap.L().Sync()
 	// 打印配置, 注意需要先初始化日志。
 	cfg.Print()
