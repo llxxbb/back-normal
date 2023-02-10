@@ -8,7 +8,7 @@ import (
 )
 
 func ProjectVersion(c *gin.Context) {
-	c.String(http.StatusOK, config.C.ProjectVersion)
+	c.String(http.StatusOK, config.CTX.C.ProjectVersion)
 }
 
 func IsAlive(c *gin.Context) {

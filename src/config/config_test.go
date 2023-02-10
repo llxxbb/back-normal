@@ -9,14 +9,15 @@ import (
 )
 
 func TestConfig_default(t *testing.T) {
-	assert.Equal(t, "back-normal", C.ProjectName)
-	assert.Equal(t, "v0.0.1", C.ProjectVersion)
-	assert.Equal(t, "product", C.Env)
+	c := NewConfig()
+	assert.Equal(t, "back-normal", c.ProjectName)
+	assert.Equal(t, "v0.0.1", c.ProjectVersion)
+	assert.Equal(t, "product", c.Env)
 	wd, _ := os.Getwd()
-	assert.Equal(t, wd, C.WorkPath)
-	assert.Equal(t, true, len(C.Host) > 0)
-	println(C.LogPath)
-	assert.Equal(t, true, len(C.LogPath) > 0)
+	assert.Equal(t, wd, c.WorkPath)
+	assert.Equal(t, true, len(c.Host) > 0)
+	println(c.LogPath)
+	assert.Equal(t, true, len(c.LogPath) > 0)
 }
 
 func TestFindField(t *testing.T) {

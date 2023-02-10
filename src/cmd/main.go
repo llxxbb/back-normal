@@ -11,14 +11,20 @@ import (
 )
 
 func main() {
-	tool.InitLogger(config.C.LogPath, config.C.Env == config.VAL_PRODUCT)
-	config.Print()
+	// 初始化配置
+	cfg := config.NewConfig()
+	// 初始化日志
+	tool.InitLogger(cfg.LogPath, cfg.Env == config.VAL_PRODUCT)
 	defer zap.L().Sync()
+	// 打印配置, 注意需要先初始化日志。
+	cfg.Print()
+	// 初始化上下文，如数据库
+	config.CTX.Init(&cfg)
 
 	r := api.SetupRouter()
 	// combine with zap
 	r.Use(ginzap.Ginzap(zap.L(), tool.LogTmFmtWithMS, false))
 	r.Use(ginzap.RecoveryWithZap(zap.L(), true))
 	// start web
-	r.Run(":" + config.C.Port)
+	r.Run(":" + cfg.Port)
 }

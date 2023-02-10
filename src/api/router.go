@@ -11,7 +11,7 @@ import (
 var db = make(map[string]string)
 
 func SetupRouter() *gin.Engine {
-	if config.C.GinRelease {
+	if config.CTX.C.GinRelease {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	r := gin.New()

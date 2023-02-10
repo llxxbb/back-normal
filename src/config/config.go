@@ -14,10 +14,6 @@ import (
 	"go.uber.org/zap"
 )
 
-var C = new()
-
-// var C = Config{}
-
 type Config struct {
 	ProjectName    string // 项目名称
 	ProjectVersion string // 项目本身的版本信息
@@ -30,8 +26,14 @@ type Config struct {
 	Host     string // 实例部署位置
 	WorkPath string // 项目启动所在的目录
 	LogPath  string // 日志输出的位置，由 log.root 主机IP 项目名 等组成
-	Mysql    mysql.Config
+	Mysql    MysqlConfig
 	// MysqlPool
+}
+
+type MysqlConfig struct {
+	mysql.Config
+	MaxOpen int
+	MaxIdle int
 }
 
 const (
@@ -51,10 +53,10 @@ var fieldMap = map[string]string{
 	"mysql.password":          "Mysql.Passwd",
 	"mysql.address":           "Mysql.Addr",
 	"mysql.db":                "Mysql.DBName",
-	"mysql.conns.timeout":     "Mysql.ReadTimeout",
-	"mysql.conns.readTimeout": "Mysql.Timeout",
-	// "mysql.conns.maxOpen":     "LogRoot",
-	// "mysql.conns.minIdle":     "LogRoot",
+	"mysql.conns.timeout":     "Mysql.Timeout",
+	"mysql.conns.readTimeout": "Mysql.ReadTimeout",
+	"mysql.conns.maxOpen":     "Mysql.MaxOpen",
+	"mysql.conns.maxIdle":     "Mysql.MaxIdle",
 }
 
 const (
@@ -64,7 +66,7 @@ const (
 	_nameSplitter = "_"
 )
 
-func new() (c Config) {
+func NewConfig() (c Config) {
 
 	// 可以从环境变量中取值
 	viper.SetDefault(KEY_ENV, VAL_PRODUCT)
@@ -114,7 +116,6 @@ func (c *Config) mergeFile(path string) {
 
 	// 利用反射进行赋值
 	cfgType := reflect.ValueOf(c).Elem()
-	// mKey: map key, mVal map value
 	for mKey, mVal := range fieldMap {
 		fileVal := viper.GetString(mKey)
 		if fileVal == "" {
@@ -135,9 +136,9 @@ func (c *Config) mergeFile(path string) {
 				err = e
 			}
 		case "int":
-			rtn, e := strconv.ParseInt(fileVal, 0, 32)
+			rtn, e := strconv.ParseInt(fileVal, 0, 64)
 			if e == nil {
-				rV = reflect.ValueOf(rtn)
+				rV = reflect.ValueOf(int(rtn))
 			} else {
 				err = e
 			}
@@ -168,22 +169,24 @@ func findField(parent *reflect.Value, field string) *reflect.Value {
 	}
 }
 
-func Print() {
+func (c *Config) Print() {
 	zap.L().Info("++++++++++++++ config info begin: ++++++++++++++")
-	zap.L().Info("-- ", zap.String("ProjectName", C.ProjectName))
-	zap.L().Info("-- ", zap.String("ProjectVersion", C.ProjectVersion))
-	zap.L().Info("-- ", zap.Bool("GinRelease", C.GinRelease))
+	zap.L().Info("-- ", zap.String("ProjectName", c.ProjectName))
+	zap.L().Info("-- ", zap.String("ProjectVersion", c.ProjectVersion))
+	zap.L().Info("-- ", zap.Bool("GinRelease", c.GinRelease))
 	zap.L().Info("------------ mysql ------------")
-	zap.L().Info("-- ", zap.String("addr", C.Mysql.Addr))
-	zap.L().Info("-- ", zap.String("addr", C.Mysql.DBName))
-	zap.L().Info("-- ", zap.String("timeout", C.Mysql.Timeout.String()))
-	zap.L().Info("-- ", zap.String("readTimeout", C.Mysql.ReadTimeout.String()))
+	zap.L().Info("-- ", zap.String("addr", c.Mysql.Addr))
+	zap.L().Info("-- ", zap.String("dbName", c.Mysql.DBName))
+	zap.L().Info("-- ", zap.String("timeout", c.Mysql.Timeout.String()))
+	zap.L().Info("-- ", zap.String("readTimeout", c.Mysql.ReadTimeout.String()))
+	zap.L().Info("-- ", zap.Int("maxOpen", c.Mysql.MaxOpen))
+	zap.L().Info("-- ", zap.Int("MaxIdle", c.Mysql.MaxIdle))
 	zap.L().Info("------------ server info ------------")
-	zap.L().Info("-- ", zap.String("Env", C.Env))
-	zap.L().Info("-- ", zap.String("Host", C.Host))
-	zap.L().Info("-- ", zap.String("Port", C.Port))
+	zap.L().Info("-- ", zap.String("Env", c.Env))
+	zap.L().Info("-- ", zap.String("Host", c.Host))
+	zap.L().Info("-- ", zap.String("Port", c.Port))
 	zap.L().Info("------------ path info ------------")
-	zap.L().Info("-- ", zap.String("WorkPath", C.WorkPath))
-	zap.L().Info("-- ", zap.String("LogPath", C.LogPath))
+	zap.L().Info("-- ", zap.String("WorkPath", c.WorkPath))
+	zap.L().Info("-- ", zap.String("LogPath", c.LogPath))
 	zap.L().Info("++++++++++++++ config info end: ++++++++++++++")
 }

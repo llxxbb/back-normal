@@ -13,6 +13,6 @@ mysql:
   db: doorman
   conns:
     maxOpen: 40
-    minIdle: 2
+    maxIdle: 2
     timeout: 500ms
     readTimeout: 3s
