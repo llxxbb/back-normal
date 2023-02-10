@@ -9,7 +9,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/go-sql-driver/mysql"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 )
@@ -30,12 +29,6 @@ type Config struct {
 	// MysqlPool
 }
 
-type MysqlConfig struct {
-	mysql.Config
-	MaxOpen int
-	MaxIdle int
-}
-
 const (
 	KEY_ENV     = "env"
 	VAL_PRODUCT = "product"
@@ -48,15 +41,6 @@ var fieldMap = map[string]string{
 	"port":        "Port",
 	"gin.release": "GinRelease",
 	"log.root":    "LogRoot",
-
-	"mysql.user":              "Mysql.User",
-	"mysql.password":          "Mysql.Passwd",
-	"mysql.address":           "Mysql.Addr",
-	"mysql.db":                "Mysql.DBName",
-	"mysql.conns.timeout":     "Mysql.Timeout",
-	"mysql.conns.readTimeout": "Mysql.ReadTimeout",
-	"mysql.conns.maxOpen":     "Mysql.MaxOpen",
-	"mysql.conns.maxIdle":     "Mysql.MaxIdle",
 }
 
 const (
@@ -67,7 +51,7 @@ const (
 )
 
 func NewConfig() (c Config) {
-
+	AppendMysqlConfigMap(fieldMap)
 	// 可以从环境变量中取值
 	viper.SetDefault(KEY_ENV, VAL_PRODUCT)
 	viper.AutomaticEnv()
