@@ -32,6 +32,7 @@ func DbSelect(c *gin.Context) {
 	if err != nil {
 		zap.S().Warn(err)
 		c.JSON(http.StatusOK, access.GetErrorResultD(def.ET_ENV, def.E_ENV.Code, def.E_ENV.Msg+err.Error(), nil))
+		return
 	}
 	c.JSON(http.StatusOK, rows)
 }
@@ -41,6 +42,7 @@ func DBTimeout(c *gin.Context) {
 	err := config.CTX.TmpDao.Delay()
 	if err != nil {
 		c.JSON(http.StatusOK, access.GetErrorResultD(def.ET_ENV, def.E_ENV.Code, def.E_ENV.Msg+err.Error(), nil))
+		return
 	}
 	c.String(http.StatusOK, "O! no, it should be timeout")
 }
