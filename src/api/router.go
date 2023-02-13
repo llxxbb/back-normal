@@ -30,5 +30,10 @@ func SetupRouter() *gin.Engine {
 		gDemo.POST("/v1", demo.V1)
 		gDemo.POST("/v2", demo.V2)
 	}
+	gTmp := r.Group("/tmp")
+	{
+		gTmp.POST("/byName", demo.DbSelect)
+		gTmp.POST("/timeout", demo.DBTimeout)
+	}
 	return r
 }

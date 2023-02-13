@@ -1,6 +1,8 @@
 package config
 
 import (
+	"database/sql"
+
 	"github.com/go-sql-driver/mysql"
 	"go.uber.org/zap"
 )
@@ -30,4 +32,26 @@ func (c *MysqlConfig) Print() {
 	zap.L().Info("-- ", zap.String("readTimeout", c.ReadTimeout.String()))
 	zap.L().Info("-- ", zap.Int("maxOpen", c.MaxOpen))
 	zap.L().Info("-- ", zap.Int("MaxIdle", c.MaxIdle))
+}
+
+func DemoDBInit(cfg *MysqlConfig) *sql.DB {
+	// more default config for mysql
+	cfg.Net = "tcp"
+	cfg.AllowNativePasswords = true
+
+	// connect
+	db, err := sql.Open("mysql", cfg.FormatDSN())
+	if err != nil {
+		zap.S().Fatal(err)
+		panic(err)
+	}
+	db.SetMaxOpenConns(cfg.MaxOpen)
+	db.SetMaxIdleConns(cfg.MaxIdle)
+	err = db.Ping()
+	if err != nil {
+		zap.S().Fatal(err)
+		panic(err)
+	}
+	zap.S().Info("connected for : ", cfg.DBName)
+	return db
 }

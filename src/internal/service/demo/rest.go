@@ -28,17 +28,19 @@ func V2(c *gin.Context) {
 func DbSelect(c *gin.Context) {
 	in := access.ParaIn{}
 	c.ShouldBindJSON(&in)
-	rows, err := config.CTX.DemoDB.Query("SELECT * FROM album WHERE artist = ? LIMIt ?", in.Data)
+	rows, err := config.CTX.TmpDao.SelectByName(in.Data.(string))
 	if err != nil {
 		zap.S().Warn(err)
 		c.JSON(http.StatusOK, access.GetErrorResultD(def.ET_ENV, def.E_ENV.Code, def.E_ENV.Msg+err.Error(), nil))
 	}
-	defer rows.Close()
-	// for rows.Next() {
-	// 	var alb Album
-	// 	if err := rows.Scan(&alb.ID, &alb.Title, &alb.Artist, &alb.Price); err != nil {
-	// 		return nil, fmt.Errorf("albumsByArtist %q: %v", name, err)
-	// 	}
-	// 	albums = append(albums, alb)
-	// }
+	c.JSON(http.StatusOK, rows)
+}
+
+func DBTimeout(c *gin.Context) {
+	zap.L().Info("begin")
+	err := config.CTX.TmpDao.Delay()
+	if err != nil {
+		c.JSON(http.StatusOK, access.GetErrorResultD(def.ET_ENV, def.E_ENV.Code, def.E_ENV.Msg+err.Error(), nil))
+	}
+	c.String(http.StatusOK, "O! no, it should be timeout")
 }
