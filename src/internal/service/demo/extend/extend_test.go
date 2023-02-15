@@ -8,9 +8,9 @@ import (
 )
 
 func TestIncrement(t *testing.T) {
-	var i MyInt = 10
+	var i = 10
 	// 调用扩展的方法
-	rtn := i.increment()
+	rtn := MyInt(i).increment()
 	assert.Equal(t, 11, rtn)
 }
 

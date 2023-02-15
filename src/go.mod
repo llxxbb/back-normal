@@ -6,7 +6,7 @@ require (
 	github.com/gin-contrib/zap v0.1.0 // zap middleware for Gin
 	github.com/gin-gonic/gin v1.8.2 // web framework
 	github.com/go-sql-driver/mysql v1.7.0
-	github.com/llxxbb/go-BaseConfig v0.1.1
+	github.com/llxxbb/go-BaseConfig v0.1.2
 	github.com/stretchr/testify v1.8.1 // test framework, include assert, mock etc.
 	gitlab.cdel.local/platform/go/platform-common v0.1.2
 	go.uber.org/zap v1.24.0 // Blazing fast, structured, leveled logging
@@ -43,7 +43,7 @@ require (
 	go.uber.org/atomic v1.10.0 // indirect
 	go.uber.org/multierr v1.9.0 // indirect
 	golang.org/x/crypto v0.6.0 // indirect
-	golang.org/x/net v0.6.0 // indirect
+	golang.org/x/net v0.7.0 // indirect
 	golang.org/x/sys v0.5.0 // indirect
 	golang.org/x/text v0.7.0 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect

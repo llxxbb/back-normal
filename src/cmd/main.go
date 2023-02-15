@@ -4,6 +4,7 @@ import (
 	"cdel/demo/Normal/api"
 	"cdel/demo/Normal/config"
 	"cdel/demo/Normal/tool"
+	_ "embed"
 
 	bc "github.com/llxxbb/go-BaseConfig/config"
 
@@ -12,8 +13,12 @@ import (
 	"go.uber.org/zap"
 )
 
+//go:embed config_default.yml
+var configDefault []byte
+
 func main() {
-	// 初始化配置
+	// 初始化配置, 使用嵌入的缺省配置文件
+	bc.FDefault = configDefault
 	cfg := config.DemoConfig{}
 	bc.FillConfig(&cfg, &cfg.BaseConfig)
 	// 初始化日志
