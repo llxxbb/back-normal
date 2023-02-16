@@ -53,14 +53,17 @@ func RemoteCall(c *gin.Context) {
 	resp, err := config.CTX.Client.R().
 		SetHeader("HOST", "gateway.cdeledu.com").
 		SetBody(para).
-		Post("http://10.20.14.174/op_v2/cdel@+/server/time")
+		Post("/cdel@+/server/time")
 	if err != nil {
 		c.JSON(http.StatusOK, access.GetErrorResultD(def.ET_ENV, def.E_ENV.Code, def.E_ENV.Msg+err.Error(), nil))
 		return
 	}
+	// no use here, just only show the usage of the json.Unmarshal
 	raw := resp.Body()
 	rtn := old.ServiceResult{}
 	json.Unmarshal(raw, &rtn)
 	zap.S().Debug(rtn)
+
+	// return
 	c.Data(http.StatusOK, "application/json", raw)
 }

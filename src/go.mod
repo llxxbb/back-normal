@@ -7,7 +7,7 @@ require (
 	github.com/gin-gonic/gin v1.8.2 // web framework
 	github.com/go-resty/resty/v2 v2.7.0 // rest client
 	github.com/go-sql-driver/mysql v1.7.0
-	github.com/jarcoal/httpmock v1.3.0 // remote mock
+	github.com/h2non/gock v1.2.0 // http mock, intercept request of http.Client
 	github.com/llxxbb/go-BaseConfig v0.1.2
 	github.com/stretchr/testify v1.8.1 // test framework, include assert, mock etc.
 	gitlab.cdel.local/platform/go/platform-common v0.1.2
@@ -23,6 +23,7 @@ require (
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.11.2 // indirect
 	github.com/goccy/go-json v0.10.0 // indirect
+	github.com/h2non/parth v0.0.0-20190131123155-b4df798d6542 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
