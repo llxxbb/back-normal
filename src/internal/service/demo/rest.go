@@ -2,6 +2,7 @@ package demo
 
 import (
 	"cdel/demo/Normal/config"
+	"encoding/json"
 	"net/http"
 
 	"gitlab.cdel.local/platform/go/platform-common/access"
@@ -44,5 +45,22 @@ func DBTimeout(c *gin.Context) {
 		c.JSON(http.StatusOK, access.GetErrorResultD(def.ET_ENV, def.E_ENV.Code, def.E_ENV.Msg+err.Error(), nil))
 		return
 	}
-	c.String(http.StatusOK, "O! no, it should be timeout")
+	c.String(http.StatusGatewayTimeout, "O! no, it should be timeout")
+}
+
+func RemoteCall(c *gin.Context) {
+	para := access.ParaIn{}
+	resp, err := config.CTX.Client.R().
+		SetHeader("HOST", "gateway.cdeledu.com").
+		SetBody(para).
+		Post("http://10.20.14.174/op_v2/cdel@+/server/time")
+	if err != nil {
+		c.JSON(http.StatusOK, access.GetErrorResultD(def.ET_ENV, def.E_ENV.Code, def.E_ENV.Msg+err.Error(), nil))
+		return
+	}
+	raw := resp.Body()
+	rtn := old.ServiceResult{}
+	json.Unmarshal(raw, &rtn)
+	zap.S().Debug(rtn)
+	c.Data(http.StatusOK, "application/json", raw)
 }

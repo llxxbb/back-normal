@@ -11,7 +11,7 @@ import (
 var db = make(map[string]string)
 
 func SetupRouter() *gin.Engine {
-	if config.CTX.C.GinRelease {
+	if config.CTX.Cfg.GinRelease {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	r := gin.New()
@@ -29,6 +29,7 @@ func SetupRouter() *gin.Engine {
 	{
 		gDemo.POST("/v1", demo.V1)
 		gDemo.POST("/v2", demo.V2)
+		gDemo.POST("/rest", demo.RemoteCall)
 	}
 	gTmp := r.Group("/tmp")
 	{

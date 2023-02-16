@@ -6,6 +6,9 @@ port: 80
 
 log.root: /web/logs
 
+rest:
+  timeOut: 3000
+
 mysql:
   user: dev_user
   password: dev_password
