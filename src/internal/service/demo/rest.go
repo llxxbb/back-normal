@@ -11,6 +11,7 @@ import (
 	"go.uber.org/zap"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-resty/resty/v2"
 )
 
 func V1(c *gin.Context) {
@@ -49,15 +50,12 @@ func DBTimeout(c *gin.Context) {
 }
 
 func RemoteCall(c *gin.Context) {
-	para := access.ParaIn{}
-	resp, err := config.CTX.Client.R().
-		SetHeader("HOST", "gateway.cdeledu.com").
-		SetBody(para).
-		Post("/cdel@+/server/time")
+	resp, err := getTime(config.CTX.Client)
 	if err != nil {
 		c.JSON(http.StatusOK, access.GetErrorResultD(def.ET_ENV, def.E_ENV.Code, def.E_ENV.Msg+err.Error(), nil))
 		return
 	}
+
 	// no use here, just only show the usage of the json.Unmarshal
 	raw := resp.Body()
 	rtn := old.ServiceResult{}
@@ -66,4 +64,10 @@ func RemoteCall(c *gin.Context) {
 
 	// return
 	c.Data(http.StatusOK, "application/json", raw)
+}
+func getTime(client *resty.Client) (*resty.Response, error) {
+	para := old.Request{}
+	return client.R().
+		SetBody(para).
+		Post("/cdel@+/server/time")
 }
