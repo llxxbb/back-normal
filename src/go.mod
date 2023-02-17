@@ -3,6 +3,7 @@ module cdel/demo/Normal
 go 1.19
 
 require (
+	github.com/DATA-DOG/go-sqlmock v1.5.0 // db mock
 	github.com/gin-contrib/zap v0.1.0 // zap middleware for Gin
 	github.com/gin-gonic/gin v1.8.2 // web framework
 	github.com/go-resty/resty/v2 v2.7.0 // rest client
