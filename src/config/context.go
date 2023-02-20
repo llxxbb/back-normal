@@ -13,7 +13,7 @@ var CTX Context
 type Context struct {
 	Cfg    *DemoConfig
 	DemoDB *sql.DB
-	TmpDao *dao.TmpTableDao
+	TmpDao dao.TmpTableDaoI
 	Client *resty.Client
 }
 
@@ -21,8 +21,7 @@ func (c *Context) Init(cfg *DemoConfig) {
 	c.Cfg = cfg
 	c.DemoDB = DemoDBInit(&cfg.Mysql)
 	// 初始化DAO
-	c.TmpDao = &dao.TmpTableDao{}
-	c.TmpDao.Prepare(c.DemoDB)
+	c.TmpDao = dao.NewTmpDao(c.DemoDB)
 	// 初始化 rest client
 	c.Client = tool.NewRestClient(cfg.RestTimeout)
 }

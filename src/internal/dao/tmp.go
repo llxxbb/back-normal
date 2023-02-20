@@ -5,12 +5,17 @@ import (
 	"database/sql"
 )
 
-type TmpTableDao struct {
+type tmpTableDao struct {
 	sqlTmpSelect *sql.Stmt // tmp 数据表的预编译
 	sqlDelay     *sql.Stmt // 用于超时测试
 }
 
-func (t *TmpTableDao) Delay() error {
+type TmpTableDaoI interface {
+	SelectByName(name string) ([]entity.TmpTable, error)
+	Delay() error
+}
+
+func (t *tmpTableDao) Delay() error {
 	_, e := t.sqlDelay.Exec()
 	if e != nil {
 		return e
@@ -18,7 +23,7 @@ func (t *TmpTableDao) Delay() error {
 	return nil
 }
 
-func (t *TmpTableDao) SelectByName(name string) ([]entity.TmpTable, error) {
+func (t *tmpTableDao) SelectByName(name string) ([]entity.TmpTable, error) {
 	rows, e := t.sqlTmpSelect.Query(name, 10)
 	if e != nil {
 		return nil, e
@@ -43,19 +48,21 @@ func (t *TmpTableDao) SelectByName(name string) ([]entity.TmpTable, error) {
 	return rtn, nil
 }
 
-func (t *TmpTableDao) Prepare(db *sql.DB) {
+func NewTmpDao(db *sql.DB) TmpTableDaoI {
+	dao := tmpTableDao{}
 	// Tmp table
 	sql := "SELECT id, name, t1, t2 FROM tmp WHERE name = ? LIMIt ?"
 	var e error
-	t.sqlTmpSelect, e = db.Prepare(sql)
+	dao.sqlTmpSelect, e = db.Prepare(sql)
 	if e != nil {
 		panic(e)
 	}
 
 	// 超时测试
 	sql = "select SLEEP(10)"
-	t.sqlDelay, e = db.Prepare(sql)
+	dao.sqlDelay, e = db.Prepare(sql)
 	if e != nil {
 		panic(e)
 	}
+	return &dao
 }

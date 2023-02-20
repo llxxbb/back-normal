@@ -30,8 +30,7 @@ func TestSelectByName(t *testing.T) {
 	byName.ExpectQuery().WithArgs("tom", 10).WillReturnRows(rows)
 
 	// business logic ------------------------
-	dao := TmpTableDao{}
-	dao.Prepare(db)
+	dao := NewTmpDao(db)
 	rtn, e := dao.SelectByName("tom")
 	if e != nil {
 		panic(e)

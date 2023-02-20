@@ -11,6 +11,17 @@ import (
 	"gitlab.cdel.local/platform/go/platform-common/old"
 )
 
+// type MockDao struct {
+// 	mock.Mock
+// 	dao.TmpTableDao
+// }
+
+// func TestDbSelect(t *testing.T) {
+// 	c := gin.Context{}
+// 	c.Request = &http.Request{}
+// 	config.CTX = config.Context{TmpDao: &MockDao}
+// }
+
 var client = resty.New()
 
 func TestServerTime(t *testing.T) {
