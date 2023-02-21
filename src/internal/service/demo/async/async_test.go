@@ -11,4 +11,8 @@ func TestAsyncDo(t *testing.T) {
 	fmt.Println("The async function is called, is waiting process")
 	rtnV := <-rtnC
 	fmt.Printf("received: %d\n", rtnV)
+
+	// async-await like
+	another := <-AsyncDo()
+	fmt.Printf("received another: %d\n", another)
 }
