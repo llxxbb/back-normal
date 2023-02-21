@@ -1,27 +1,63 @@
 package demo
 
 import (
+	"bufio"
+	"bytes"
+	"cdel/demo/Normal/config"
+	"cdel/demo/Normal/internal/dao"
+	"cdel/demo/Normal/internal/entity"
 	"encoding/json"
+	"io"
+	"net"
 	"net/http"
 	"testing"
 
+	"github.com/gin-gonic/gin"
 	"github.com/go-resty/resty/v2"
+	"github.com/golang/mock/gomock"
 	"github.com/h2non/gock"
 	"github.com/stretchr/testify/assert"
+	"gitlab.cdel.local/platform/go/platform-common/access"
 	"gitlab.cdel.local/platform/go/platform-common/old"
 )
 
-// type MockDao struct {
-// 	mock.Mock
-// 	dao.TmpTableDao
-// }
+// used for TestDbSelect --------------------------
+type fakeWriter struct {
+}
 
-// func TestDbSelect(t *testing.T) {
-// 	c := gin.Context{}
-// 	c.Request = &http.Request{}
-// 	config.CTX = config.Context{TmpDao: &MockDao}
-// }
+func (f *fakeWriter) WriteHeader(statusCode int)      {}
+func (f *fakeWriter) CloseNotify() <-chan bool        { return nil }
+func (f *fakeWriter) Flush()                          {}
+func (f *fakeWriter) Header() http.Header             { return map[string][]string{} }
+func (f *fakeWriter) Status() int                     { return 0 }
+func (f *fakeWriter) Size() int                       { return 0 }
+func (f *fakeWriter) WriteString(string) (int, error) { return 0, nil }
+func (f *fakeWriter) Write([]byte) (int, error)       { return 0, nil }
+func (f *fakeWriter) Written() bool                   { return false }
+func (f *fakeWriter) WriteHeaderNow()                 {}
+func (f *fakeWriter) Pusher() http.Pusher             { return nil }
+func (f *fakeWriter) Hijack() (net.Conn, *bufio.ReadWriter, error) {
+	return nil, &bufio.ReadWriter{}, nil
+}
 
+func TestDbSelect(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	// 创建 mock 对象, 下面的 NewMockTmpTableDaoI 由 mockgen 创建
+	m := dao.NewMockTmpTableDaoI(ctrl)
+	m.EXPECT().SelectByName(gomock.Eq("tom")).Return(
+		[]entity.TmpTable{}, nil,
+	).Times(1)
+
+	req, _ := json.Marshal(access.ParaIn{Data: "tom"})
+	c := gin.Context{Writer: &fakeWriter{}}
+	c.Request = &http.Request{}
+	c.Request.Body = io.NopCloser(bytes.NewReader(req))
+	config.CTX = config.Context{TmpDao: m}
+	DbSelect(&c)
+
+}
+
+// will be intercepted
 var client = resty.New()
 
 func TestServerTime(t *testing.T) {

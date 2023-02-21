@@ -8,6 +8,7 @@ require (
 	github.com/gin-gonic/gin v1.8.2 // web framework
 	github.com/go-resty/resty/v2 v2.7.0 // rest client
 	github.com/go-sql-driver/mysql v1.7.0
+	github.com/golang/mock v1.6.0 // common mock
 	github.com/h2non/gock v1.2.0 // http mock, intercept request of http.Client
 	github.com/llxxbb/go-BaseConfig v0.1.2
 	github.com/stretchr/testify v1.8.1 // test framework, include assert, mock etc.

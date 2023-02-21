@@ -5,14 +5,14 @@ import (
 	"database/sql"
 )
 
-type tmpTableDao struct {
-	sqlTmpSelect *sql.Stmt // tmp 数据表的预编译
-	sqlDelay     *sql.Stmt // 用于超时测试
-}
-
 type TmpTableDaoI interface {
 	SelectByName(name string) ([]entity.TmpTable, error)
 	Delay() error
+}
+
+type tmpTableDao struct {
+	sqlTmpSelect *sql.Stmt // tmp 数据表的预编译
+	sqlDelay     *sql.Stmt // 用于超时测试
 }
 
 func (t *tmpTableDao) Delay() error {
