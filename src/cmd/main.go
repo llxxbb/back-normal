@@ -5,10 +5,7 @@ import (
 	"cdel/demo/Normal/config"
 	"cdel/demo/Normal/tool"
 	_ "embed"
-
 	bc "github.com/llxxbb/go-BaseConfig/config"
-
-	ginzap "github.com/gin-contrib/zap"
 
 	"go.uber.org/zap"
 )
@@ -30,9 +27,7 @@ func main() {
 	config.CTX.Init(&cfg)
 
 	r := api.SetupRouter()
-	// combine with zap
-	r.Use(ginzap.Ginzap(zap.L(), tool.LogTmFmtWithMS, false))
-	r.Use(ginzap.RecoveryWithZap(zap.L(), true))
+
 	// start web
 	r.Run(":" + cfg.Port)
 }

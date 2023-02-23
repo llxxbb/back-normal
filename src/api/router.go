@@ -4,19 +4,29 @@ import (
 	"cdel/demo/Normal/config"
 	"cdel/demo/Normal/internal/service"
 	"cdel/demo/Normal/internal/service/demo"
-
+	ginzap "github.com/gin-contrib/zap"
 	"github.com/gin-gonic/gin"
+	ppgin "github.com/pinpoint-apm/pinpoint-go-agent/plugin/gin"
+	"go.uber.org/zap"
 )
 
-var db = make(map[string]string)
-
 func SetupRouter() *gin.Engine {
-	if config.CTX.Cfg.GinRelease {
+	cfg := config.CTX.Cfg
+	if cfg.GinRelease {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	r := gin.New()
 	r.SetTrustedProxies(nil)
 
+	// 设置中间间-----------------------------------
+	// combine with zap
+	//r.Use(ginzap.Ginzap(zap.L(), tool.LogTmFmtWithMS, false))		// 可以打印所有的请求日志
+	r.Use(ginzap.RecoveryWithZap(zap.L(), true))
+	// use pinpoint
+	cfg.PinPoint.InitPinPoint(cfg.ProjectName, cfg.Host)
+	r.Use(ppgin.Middleware())
+
+	// 设置中间间-----------------------------------
 	// 用于监控
 	r.GET("/monitorDB/monitor", service.IsAlive)
 	r.GET("/monitorDB/monitor.shtml", service.IsAlive)

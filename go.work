@@ -3,4 +3,4 @@ go 1.19
 use ./src
 
 // replace gitlab.cdel.local/platform/go/platform-common v0.1.2 => E:\tools\platform\go\platform-common
-// replace github.com/llxxbb/go-BaseConfig v0.1.2 => E:\github\go-BaseConfig
+replace github.com/llxxbb/go-BaseConfig v0.1.2 => E:\github\go-BaseConfig

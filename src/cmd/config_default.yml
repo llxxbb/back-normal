@@ -4,6 +4,12 @@ prj:
 
 port: 80
 
+pinpoint:
+  url: 10.59.1.140
+  sampling:
+    counterRate: 20
+    percentRate: 0.05
+
 log.root: /web/logs
 
 rest:
