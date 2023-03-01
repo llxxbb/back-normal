@@ -30,7 +30,7 @@ func V2(c *gin.Context) {
 func DbSelect(c *gin.Context) {
 	in := access.ParaIn{}
 	c.ShouldBindJSON(&in)
-	rows, err := config.CTX.TmpDao.SelectByName(in.Data.(string))
+	rows, err := config.CTX.TmpDao.SelectByName(c.Request.Context(), in.Data.(string))
 	if err != nil {
 		zap.S().Warn(err)
 		c.JSON(http.StatusOK, access.GetErrorResultD(def.ET_ENV, def.E_ENV.Code, def.E_ENV.Msg+err.Error(), nil))
@@ -75,7 +75,7 @@ func getTime(client *resty.Client) (*resty.Response, error) {
 func App2(c *gin.Context) {
 
 	request := config.CTX.App2Client.R()
-	// important! use context to chain tow apps
+	// important! use context to chain two apps
 	request.SetContext(c.Request.Context())
 	rtn, _ := request.Get("/isAlive")
 	c.String(http.StatusOK, rtn.String())

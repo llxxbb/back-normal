@@ -2,8 +2,9 @@ package config
 
 import (
 	"database/sql"
-
 	"github.com/go-sql-driver/mysql"
+
+	_ "github.com/pinpoint-apm/pinpoint-go-agent/plugin/mysql"
 	"go.uber.org/zap"
 )
 
@@ -40,7 +41,7 @@ func (cfg *MysqlConfig) DemoDBInit() *sql.DB {
 	cfg.AllowNativePasswords = true
 
 	// connect
-	db, err := sql.Open("mysql", cfg.FormatDSN())
+	db, err := sql.Open("mysql-pinpoint", cfg.FormatDSN())
 	if err != nil {
 		zap.S().Fatal(err)
 		panic(err)

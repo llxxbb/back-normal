@@ -2,11 +2,13 @@ package dao
 
 import (
 	"cdel/demo/Normal/internal/entity"
+	"context"
 	"database/sql"
+	"github.com/pinpoint-apm/pinpoint-go-agent"
 )
 
 type TmpTableDaoI interface {
-	SelectByName(name string) ([]entity.TmpTable, error)
+	SelectByName(ctx context.Context, name string) ([]entity.TmpTable, error)
 	Delay() error
 }
 
@@ -23,8 +25,10 @@ func (t *tmpTableDao) Delay() error {
 	return nil
 }
 
-func (t *tmpTableDao) SelectByName(name string) ([]entity.TmpTable, error) {
-	rows, e := t.sqlTmpSelect.Query(name, 10)
+func (t *tmpTableDao) SelectByName(ctx context.Context, name string) ([]entity.TmpTable, error) {
+	tracer := pinpoint.FromContext(ctx)
+	nctx := pinpoint.NewContext(context.Background(), tracer)
+	rows, e := t.sqlTmpSelect.QueryContext(nctx, name, 10)
 	if e != nil {
 		return nil, e
 	}
