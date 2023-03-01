@@ -8,23 +8,22 @@ import (
 
 type DemoConfig struct {
 	bc.BaseConfig
-	Mysql       MysqlConfig
-	RestTimeout int
-	PinPoint    tool.PinPointConfig
+	Mysql    MysqlConfig
+	Rpc      tool.RpcConfig
+	PinPoint tool.PinPointConfig
 }
 
 func (c *DemoConfig) AppendFieldMap(fm map[string]string) {
 	c.Mysql.AppendFieldMap(fm)
+	c.Rpc.AppendFieldMap(fm)
 	c.PinPoint.AppendFieldMap(fm)
-	fm["rest.timeOut"] = "RestTimeout"
 }
 
 func (c *DemoConfig) Print() {
 	zap.L().Info("++++++++++++++ config info begin: ++++++++++++++")
 	c.BaseConfig.Print()
 	c.Mysql.Print()
+	c.Rpc.Print()
 	c.PinPoint.Print()
-	zap.L().Info("------------ other setting ------------")
-	zap.L().Info("-- ", zap.Int("rest.timeout", c.RestTimeout))
 	zap.L().Info("++++++++++++++ config info end: ++++++++++++++")
 }

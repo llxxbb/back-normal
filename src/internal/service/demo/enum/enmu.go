@@ -6,6 +6,8 @@ import (
 
 type Season int
 
+var seasons = [...]string{"spring", "summer", "autumn", "winter"}
+
 const (
 	Spring Season = iota + 1
 	Summer
@@ -14,7 +16,6 @@ const (
 )
 
 func (s Season) String() string {
-	seasons := [...]string{"spring", "summer", "autumn", "winter"}
 	if s < Spring || s > Winter {
 		return fmt.Sprintf("Season(%d)", int(s))
 	}

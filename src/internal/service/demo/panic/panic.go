@@ -19,6 +19,7 @@ func OutOfIndex() (rtn string) {
 }
 
 func MyPanic() (rtn string) {
+	// 仅用于证明 panic 被触发
 	defer func() {
 		if err := recover(); err != nil {
 			rtn = fmt.Sprintf("%v", err)

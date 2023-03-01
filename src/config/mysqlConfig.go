@@ -34,7 +34,7 @@ func (c *MysqlConfig) Print() {
 	zap.L().Info("-- ", zap.Int("MaxIdle", c.MaxIdle))
 }
 
-func DemoDBInit(cfg *MysqlConfig) *sql.DB {
+func (cfg *MysqlConfig) DemoDBInit() *sql.DB {
 	// more default config for mysql
 	cfg.Net = "tcp"
 	cfg.AllowNativePasswords = true

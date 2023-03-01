@@ -8,20 +8,17 @@ import (
 type PinPointConfig struct {
 	ServerURL   string
 	CounterRate int
-	PercentRate float32
 }
 
 func (c *PinPointConfig) AppendFieldMap(fMap map[string]string) {
 	fMap["pinpoint.url"] = "PinPoint.ServerURL"
 	fMap["pinpoint.sampling.counterRate"] = "PinPoint.CounterRate"
-	fMap["pinpoint.sampling.percentRate"] = "PinPoint.PercentRate"
 }
 
 func (c *PinPointConfig) Print() {
 	zap.L().Info("------------ pinpoint ------------")
 	zap.L().Info("-- ", zap.String("url", c.ServerURL))
 	zap.L().Info("-- ", zap.Int("sampling.counterRate", c.CounterRate))
-	zap.L().Info("-- ", zap.Float32("sampling.percentRate", c.PercentRate))
 
 }
 
@@ -31,7 +28,7 @@ func (c *PinPointConfig) InitPinPoint(prj string, host string) pinpoint.Agent {
 		pinpoint.WithAgentId(host),
 		pinpoint.WithCollectorHost(c.ServerURL),
 		pinpoint.WithSamplingCounterRate(c.CounterRate),
-		pinpoint.WithSamplingPercentRate(c.PercentRate),
+		pinpoint.WithLogLevel("Error"),
 	}
 	cfg, _ := pinpoint.NewConfig(opts...)
 	agent, err := pinpoint.NewAgent(cfg)

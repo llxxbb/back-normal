@@ -1,1 +1,5 @@
 port: 8080
+
+pinpoint:
+  sampling:
+    counterRate: 2

@@ -50,7 +50,7 @@ func DBTimeout(c *gin.Context) {
 }
 
 func RemoteCall(c *gin.Context) {
-	resp, err := getTime(config.CTX.Client)
+	resp, err := getTime(config.CTX.GatewayClient)
 	if err != nil {
 		c.JSON(http.StatusOK, access.GetErrorResultD(def.ET_ENV, def.E_ENV.Code, def.E_ENV.Msg+err.Error(), nil))
 		return
@@ -70,4 +70,13 @@ func getTime(client *resty.Client) (*resty.Response, error) {
 	return client.R().
 		SetBody(para).
 		Post("/cdel@+/server/time")
+}
+
+func App2(c *gin.Context) {
+
+	request := config.CTX.App2Client.R()
+	// important! use context to chain tow apps
+	request.SetContext(c.Request.Context())
+	rtn, _ := request.Get("/isAlive")
+	c.String(http.StatusOK, rtn.String())
 }

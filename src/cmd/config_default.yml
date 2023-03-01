@@ -8,12 +8,14 @@ pinpoint:
   url: 10.59.1.140
   sampling:
     counterRate: 20
-    percentRate: 0.05
 
 log.root: /web/logs
 
-rest:
+rpc:
   timeOut: 3000
+  baseUrl:
+    gateway: http://10.20.14.174/op_v2
+    appTwo: http://localhost:19000
 
 mysql:
   user: dev_user
