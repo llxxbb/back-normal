@@ -44,6 +44,7 @@ func SetupRouter() *gin.Engine {
 	gTmp := r.Group("/tmp")
 	{
 		gTmp.POST("/byName", demo.DbSelect)
+		gTmp.POST("/byNameCached", demo.DbSelectCached)
 		gTmp.POST("/timeout", demo.DBTimeout)
 	}
 	gPinPoint := r.Group("/pp")

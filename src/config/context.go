@@ -3,8 +3,6 @@ package config
 import (
 	"cdel/demo/Normal/internal/dao"
 	"database/sql"
-	"github.com/redis/go-redis/v9"
-
 	"github.com/go-resty/resty/v2"
 )
 
@@ -13,10 +11,10 @@ var CTX Context
 type Context struct {
 	Cfg           *DemoConfig
 	DemoDB        *sql.DB
-	TmpDao        dao.TmpTableDaoI
 	GatewayClient *resty.Client
 	App2Client    *resty.Client
-	Redis         *redis.ClusterClient
+	TmpDao        dao.TmpTableDaoI
+	TmpCache      dao.TmpTableDaoI
 }
 
 func (c *Context) Init(cfg *DemoConfig) {
@@ -24,11 +22,11 @@ func (c *Context) Init(cfg *DemoConfig) {
 	// 数据库及 dao 初始化 --------------------------
 	c.DemoDB = cfg.Mysql.DemoDBInit()
 	c.TmpDao = dao.NewTmpDao(c.DemoDB)
+	// 对数据进行缓存
+	redisClient := cfg.Redis.GetRedisClient()           // redis 初始化
+	c.TmpCache = dao.GetCacheTmp(c.TmpDao, redisClient) // cached dao
 
 	// rpc 初始化 --------------------------
 	c.GatewayClient = cfg.Rpc.NewGateWayClient()
 	c.App2Client = cfg.Rpc.NewApp2Client()
-
-	// redis 初始化 --------------------------
-	c.Redis = cfg.Redis.GetRedisClient()
 }

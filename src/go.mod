@@ -16,7 +16,7 @@ require (
 	github.com/pinpoint-apm/pinpoint-go-agent/plugin/http v1.3.0
 	github.com/pinpoint-apm/pinpoint-go-agent/plugin/mysql v1.3.0
 	github.com/redis/go-redis/v9 v9.0.2
-	github.com/go-redis/cache/v9 v9.0.0 // indirect
+	github.com/go-redis/cache/v9 v9.0.0
 	github.com/stretchr/testify v1.8.2 // test framework, include assert, mock etc.
 	gitlab.cdel.local/platform/go/platform-common v0.1.2
 	go.uber.org/zap v1.24.0 // Blazing fast, structured, leveled logging

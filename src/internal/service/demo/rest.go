@@ -38,6 +38,17 @@ func DbSelect(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, rows)
 }
+func DbSelectCached(c *gin.Context) {
+	in := access.ParaIn{}
+	c.ShouldBindJSON(&in)
+	rows, err := config.CTX.TmpCache.SelectByName(c.Request.Context(), in.Data.(string))
+	if err != nil {
+		zap.S().Warn(err)
+		c.JSON(http.StatusOK, access.GetErrorResultD(def.ET_ENV, def.E_ENV.Code, def.E_ENV.Msg+err.Error(), nil))
+		return
+	}
+	c.JSON(http.StatusOK, rows)
+}
 
 func DBTimeout(c *gin.Context) {
 	zap.L().Info("begin")

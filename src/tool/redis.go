@@ -47,27 +47,17 @@ func (c *RedisConfig) Print() {
 func (c *RedisConfig) GetRedisClient() *redis.ClusterClient {
 
 	clusterClient := redis.NewClusterClient(&redis.ClusterOptions{
-		Addrs: strings.Split(c.Url, ","),
-		NewClient: func(opt *redis.Options) *redis.Client {
-			opt.Username = c.User
-			opt.Password = c.Password
-			opt.PoolSize = c.PoolSize
-			opt.PoolTimeout = c.PoolTimeout
-			opt.ReadTimeout = c.ReadTimeout
-			opt.WriteTimeout = c.WriteTimeout
-			opt.DialTimeout = c.DialTimeout
-			opt.MinIdleConns = c.MinIdleConns
-			return redis.NewClient(opt)
-		},
+		Addrs:          strings.Split(c.Url, ","),
+		Username:       c.User,
+		Password:       c.Password,
+		PoolSize:       c.PoolSize,
+		PoolTimeout:    c.PoolTimeout,
+		ReadTimeout:    c.ReadTimeout,
+		WriteTimeout:   c.WriteTimeout,
+		DialTimeout:    c.DialTimeout,
+		MinIdleConns:   c.MinIdleConns,
 		RouteByLatency: true,
 	})
-
-	// test redis
-	//cSet := clusterClient.Set(context.Background(), "test-go", "hello", time.Second)
-	//zap.S().Info("cached value set: ", cSet)
-	//
-	//rtn, _ := clusterClient.Get(context.Background(), "test-go").Result()
-	//println("cached value is: ", rtn)
 
 	return clusterClient
 }
