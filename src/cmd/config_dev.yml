@@ -1,5 +1,13 @@
 port: 8080
 
-pinpoint:
-  sampling:
-    counterRate: 2
+gin.release: false
+
+mysql:
+  user: dev_user
+  password: dev_password
+  address: 192.168.172.50:6008
+
+redis:
+  url: 192.168.192.105:27007,192.168.192.106:27007,192.168.192.107:27007,192.168.192.105:27008,192.168.192.106:27008,192.168.192.107:27008
+  user:
+  password:

@@ -11,11 +11,13 @@ type DemoConfig struct {
 	Mysql    MysqlConfig
 	Rpc      tool.RpcConfig
 	PinPoint tool.PinPointConfig
+	Redis    tool.RedisConfig
 }
 
 func (c *DemoConfig) AppendFieldMap(fm map[string]string) {
 	c.Mysql.AppendFieldMap(fm)
 	c.Rpc.AppendFieldMap(fm)
+	c.Redis.AppendFieldMap(fm)
 	c.PinPoint.AppendFieldMap(fm)
 }
 
@@ -24,6 +26,7 @@ func (c *DemoConfig) Print() {
 	c.BaseConfig.Print()
 	c.Mysql.Print()
 	c.Rpc.Print()
+	c.Redis.Print()
 	c.PinPoint.Print()
 	zap.L().Info("++++++++++++++ config info end: ++++++++++++++")
 }

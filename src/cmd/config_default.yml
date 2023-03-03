@@ -2,6 +2,8 @@ prj:
   name: back-normal
   version: v0.0.2
 
+gin.release: true
+
 port: 80
 
 pinpoint:
@@ -18,12 +20,17 @@ rpc:
     appTwo: http://localhost:19000
 
 mysql:
-  user: dev_user
-  password: dev_password
-  address: 192.168.172.50:6008
   db: doorman
   conns:
     maxOpen: 40
     maxIdle: 2
     timeout: 500ms
     readTimeout: 3s
+
+redis:
+  poolSize: 1000
+  poolTimeout: 100ms
+  dialTimeout: 500ms
+  readTimeout: 1s
+  writeTimeout: 1500ms
+  minIdleConns: 2
