@@ -32,7 +32,7 @@ func InitLogger(path string, prod bool) {
 	}
 
 	core := zapcore.NewTee(
-		// 控制台输出
+		// 控制台输出，常规输出
 		zapcore.NewCore(
 			zapcore.NewConsoleEncoder(encoderConsoleCfg),
 			// zapcore.NewJSONEncoder(encoderConsoleCfg),
@@ -41,6 +41,7 @@ func InitLogger(path string, prod bool) {
 				return lvl < zapcore.ErrorLevel
 			}),
 		),
+		// 控制台输出，错误输出
 		zapcore.NewCore(
 			zapcore.NewConsoleEncoder(encoderConsoleCfg),
 			zapcore.Lock(os.Stderr),
@@ -75,6 +76,7 @@ func newConfig() zapcore.EncoderConfig {
 		enc.AppendString(caller.TrimmedPath() + ">")
 	}
 
+	// 定义输出的字段
 	return zapcore.EncoderConfig{
 		TimeKey:          "ts",
 		LevelKey:         "level",
@@ -90,7 +92,6 @@ func newConfig() zapcore.EncoderConfig {
 		EncodeCaller:     customCallerEncoder,
 		ConsoleSeparator: " ",
 	}
-
 }
 
 func newFileCore(encoderCfg zapcore.EncoderConfig, path string, maxBackups int, maxAge int, level zapcore.LevelEnabler) zapcore.Core {

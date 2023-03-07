@@ -23,8 +23,8 @@ func (c *Context) Init(cfg *DemoConfig) {
 	c.DemoDB = cfg.Mysql.DemoDBInit()
 	c.TmpDao = dao.NewTmpDao(c.DemoDB)
 	// 对数据进行缓存
-	redisClient := cfg.Redis.GetRedisClient()           // redis 初始化
-	c.TmpCache = dao.GetCacheTmp(c.TmpDao, redisClient) // cached dao
+	redisClient := cfg.Redis.GetRedisClient()                          // redis 初始化
+	c.TmpCache = dao.GetCacheTmp(c.TmpDao, redisClient, cfg.ProjectId) // cached dao
 
 	// rpc 初始化 --------------------------
 	c.GatewayClient = cfg.Rpc.NewGateWayClient()
