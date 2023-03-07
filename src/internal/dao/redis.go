@@ -2,33 +2,29 @@ package dao
 
 import (
 	"cdel/demo/Normal/internal/entity"
+	"cdel/demo/Normal/tool"
 	"context"
-	"fmt"
 	"github.com/go-redis/cache/v9"
-	"go.uber.org/zap"
-
 	"github.com/redis/go-redis/v9"
 )
 
 type CachedTmp struct {
 	TmpTableDaoI
 	cacheDao *cache.Cache
-	appid    int
-	prefix   string
+	cfg      *tool.RedisConfig
 }
 
-func GetCacheTmp(daoI TmpTableDaoI, redisClient *redis.ClusterClient, appId int) *CachedTmp {
+func GetCacheTmp(daoI TmpTableDaoI, redisClient *redis.ClusterClient, cfg *tool.RedisConfig) *CachedTmp {
 	mycache := cache.New(&cache.Options{
 		Redis: redisClient,
 	})
-	tmp := CachedTmp{daoI, mycache, appId, fmt.Sprint(appId, ":")}
-	zap.L().Info("CachedTmp", zap.String("redis prefix", tmp.prefix))
+	tmp := CachedTmp{daoI, mycache, cfg}
 	return &tmp
 }
 
 func (ct *CachedTmp) SelectByName(ctx context.Context, name string) ([]entity.TmpTable, error) {
 	var rtn []entity.TmpTable
-	key := ct.prefix + name
+	key := ct.cfg.Prefix + name
 	e := ct.cacheDao.Get(ctx, key, &rtn)
 	if e != nil {
 		if e.Error() != "cache: key is missing" {
@@ -44,6 +40,7 @@ func (ct *CachedTmp) SelectByName(ctx context.Context, name string) ([]entity.Tm
 		return nil, e
 	}
 	_ = ct.cacheDao.Set(&cache.Item{
+		TTL: ct.cfg.Ttl,
 		Ctx: ctx,
 		Key: key,
 		//Key:   ct.prefix + name,

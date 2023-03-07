@@ -18,6 +18,7 @@ func main() {
 	bc.FDefault = configDefault
 	cfg := config.DemoConfig{}
 	bc.FillConfig(&cfg, &cfg.BaseConfig)
+	cfg.Redis.Ament(&cfg.BaseConfig) // 修订 Redis Prefix
 	// 初始化日志
 	tool.InitLogger(cfg.LogPath, cfg.Env == bc.VAL_PRODUCT)
 	defer zap.L().Sync()

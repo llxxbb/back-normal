@@ -26,7 +26,7 @@ mysql:
     maxOpen: 40
     maxIdle: 2
     timeout: 500ms
-    readTimeout: 3s
+    readTimeout: 10s
 
 redis:
   poolSize: 1000
@@ -35,3 +35,4 @@ redis:
   readTimeout: 1s
   writeTimeout: 1500ms
   minIdleConns: 2
+  ttl: 3s
