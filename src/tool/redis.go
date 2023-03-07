@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/pinpoint-apm/pinpoint-go-agent/plugin/goredisv9"
 	"github.com/redis/go-redis/v9"
 )
 
@@ -61,7 +62,7 @@ func (c *RedisConfig) Print() {
 
 func (c *RedisConfig) GetRedisClient() *redis.ClusterClient {
 
-	clusterClient := redis.NewClusterClient(&redis.ClusterOptions{
+	options := redis.ClusterOptions{
 		Addrs:          strings.Split(c.Url, ","),
 		Username:       c.User,
 		Password:       c.Password,
@@ -72,7 +73,9 @@ func (c *RedisConfig) GetRedisClient() *redis.ClusterClient {
 		DialTimeout:    c.DialTimeout,
 		MinIdleConns:   c.MinIdleConns,
 		RouteByLatency: true,
-	})
+	}
+	clusterClient := redis.NewClusterClient(&options)
+	clusterClient.AddHook(ppgoredisv9.NewClusterHook(&options))
 
 	return clusterClient
 }

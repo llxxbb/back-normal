@@ -11,6 +11,7 @@ import (
 type CachedTmp struct {
 	TmpTableDaoI
 	cacheDao *cache.Cache
+	redis    *redis.ClusterClient
 	cfg      *tool.RedisConfig
 }
 
@@ -18,7 +19,7 @@ func GetCacheTmp(daoI TmpTableDaoI, redisClient *redis.ClusterClient, cfg *tool.
 	mycache := cache.New(&cache.Options{
 		Redis: redisClient,
 	})
-	tmp := CachedTmp{daoI, mycache, cfg}
+	tmp := CachedTmp{daoI, mycache, redisClient, cfg}
 	return &tmp
 }
 

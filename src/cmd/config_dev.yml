@@ -2,6 +2,10 @@ port: 8080
 
 gin.release: false
 
+pinpoint:
+  sampling:
+    counterRate: 2
+
 mysql:
   user: dev_user
   password: dev_password
