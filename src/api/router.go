@@ -23,7 +23,6 @@ func SetupRouter() *gin.Engine {
 	//r.Use(ginzap.Ginzap(zap.L(), tool.LogTmFmtWithMS, false))		// 可以打印所有的请求日志
 	r.Use(ginzap.RecoveryWithZap(zap.L(), true))
 	// use pinpoint
-	cfg.PinPoint.InitPinPoint(cfg.ProjectName, cfg.Host)
 	r.Use(ppgin.Middleware())
 
 	// 设置中间间-----------------------------------

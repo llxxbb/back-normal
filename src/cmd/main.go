@@ -18,12 +18,15 @@ func main() {
 	bc.FDefault = configDefault
 	cfg := config.DemoConfig{}
 	bc.FillConfig(&cfg, &cfg.BaseConfig)
-	cfg.Redis.Ament(&cfg.BaseConfig) // 修订 Redis Prefix
+	cfg.Redis.Amend(&cfg.BaseConfig) // 修订 Redis Prefix
 	// 初始化日志
 	tool.InitLogger(cfg.LogPath, cfg.Env == bc.VAL_PRODUCT)
 	defer zap.L().Sync()
 	// 打印配置, 注意需要先初始化日志。
 	cfg.Print()
+
+	// init pinpoint
+	cfg.PinPoint.InitPinPoint(cfg.ProjectName, cfg.Host)
 	// 初始化上下文，如数据库
 	config.CTX.Init(&cfg)
 

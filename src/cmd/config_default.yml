@@ -1,14 +1,14 @@
 prj:
   name: back-normal
   version: v0.0.2
-  id: -100
+  id: -100  # 为本应用在信息化平台注册后的ID值
 
 gin.release: true
 
 port: 80
 
 pinpoint:
-  url: 10.59.1.140
+  url: pinpoint.cdel.local
   sampling:
     counterRate: 20
 

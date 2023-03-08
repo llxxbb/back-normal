@@ -4,7 +4,6 @@ import (
 	"cdel/demo/Normal/internal/entity"
 	"context"
 	"database/sql"
-	"github.com/pinpoint-apm/pinpoint-go-agent"
 )
 
 type TmpTableDaoI interface {
@@ -26,9 +25,7 @@ func (t *tmpTableDao) Delay() error {
 }
 
 func (t *tmpTableDao) SelectByName(ctx context.Context, name string) ([]entity.TmpTable, error) {
-	tracer := pinpoint.FromContext(ctx)
-	nctx := pinpoint.NewContext(context.Background(), tracer)
-	rows, e := t.sqlTmpSelect.QueryContext(nctx, name, 10)
+	rows, e := t.sqlTmpSelect.QueryContext(ctx, name, 10)
 	if e != nil {
 		return nil, e
 	}

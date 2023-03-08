@@ -1,6 +1,11 @@
-port: 19000
+port: 8080
 
 gin.release: true
+
+pinpoint:
+  url: 10.59.1.140
+  sampling:
+    counterRate: 2
 
 mysql:
   user: dev_user

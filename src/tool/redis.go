@@ -39,7 +39,7 @@ func (c *RedisConfig) AppendFieldMap(fMap map[string]string) {
 	fMap["redis.ttl"] = "Redis.Ttl"
 }
 
-func (c *RedisConfig) Ament(bc *config.BaseConfig) {
+func (c *RedisConfig) Amend(bc *config.BaseConfig) {
 	// 如果不指定 prefix 则使用 projectId 作为前缀。
 	if c.Prefix == "" {
 		c.Prefix = fmt.Sprint(bc.ProjectId, ":")
