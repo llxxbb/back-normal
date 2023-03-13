@@ -29,15 +29,18 @@ func (t *tmpTableDao) SelectByName(ctx context.Context, name string) ([]entity.T
 	if e != nil {
 		return nil, e
 	}
+	// 不要忘记关闭。
 	defer rows.Close()
 
 	var rtn []entity.TmpTable
 	for rows.Next() {
 		one := entity.TmpTable{}
+		// 注意 null 类型
 		var t1, t2 sql.NullString
 		if e = rows.Scan(&one.Id, &one.Name, &t1, &t2); e != nil {
 			return nil, e
 		}
+		// 对 null 进行验证
 		if t1.Valid {
 			one.T1 = t1.String
 		}
@@ -51,7 +54,7 @@ func (t *tmpTableDao) SelectByName(ctx context.Context, name string) ([]entity.T
 
 func NewTmpDao(db *sql.DB) TmpTableDaoI {
 	dao := tmpTableDao{}
-	// Tmp table
+	// Tmp table 注意参数用 ？ 替代
 	sql := "SELECT id, name, t1, t2 FROM tmp WHERE name = ? LIMIt ?"
 	var e error
 	dao.sqlTmpSelect, e = db.Prepare(sql)

@@ -1,6 +1,7 @@
 package dao
 
 import (
+	"context"
 	"testing"
 
 	"github.com/DATA-DOG/go-sqlmock"
@@ -31,7 +32,7 @@ func TestSelectByName(t *testing.T) {
 
 	// business logic ------------------------
 	dao := NewTmpDao(db)
-	rtn, e := dao.SelectByName("tom")
+	rtn, e := dao.SelectByName(context.Background(), "tom")
 	if e != nil {
 		panic(e)
 	}

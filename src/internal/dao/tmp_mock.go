@@ -6,6 +6,7 @@ package dao
 
 import (
 	entity "cdel/demo/Normal/internal/entity"
+	context "context"
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
@@ -49,16 +50,16 @@ func (mr *MockTmpTableDaoIMockRecorder) Delay() *gomock.Call {
 }
 
 // SelectByName mocks base method.
-func (m *MockTmpTableDaoI) SelectByName(name string) ([]entity.TmpTable, error) {
+func (m *MockTmpTableDaoI) SelectByName(ctx context.Context, name string) ([]entity.TmpTable, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SelectByName", name)
+	ret := m.ctrl.Call(m, "SelectByName", ctx, name)
 	ret0, _ := ret[0].([]entity.TmpTable)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // SelectByName indicates an expected call of SelectByName.
-func (mr *MockTmpTableDaoIMockRecorder) SelectByName(name interface{}) *gomock.Call {
+func (mr *MockTmpTableDaoIMockRecorder) SelectByName(ctx, name interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SelectByName", reflect.TypeOf((*MockTmpTableDaoI)(nil).SelectByName), name)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SelectByName", reflect.TypeOf((*MockTmpTableDaoI)(nil).SelectByName), ctx, name)
 }

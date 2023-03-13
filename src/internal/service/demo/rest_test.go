@@ -25,7 +25,7 @@ import (
 type fakeWriter struct {
 }
 
-func (f *fakeWriter) WriteHeader(statusCode int)      {}
+func (f *fakeWriter) WriteHeader(_ int)               {}
 func (f *fakeWriter) CloseNotify() <-chan bool        { return nil }
 func (f *fakeWriter) Flush()                          {}
 func (f *fakeWriter) Header() http.Header             { return map[string][]string{} }
@@ -43,11 +43,13 @@ func (f *fakeWriter) Hijack() (net.Conn, *bufio.ReadWriter, error) {
 func TestDbSelect(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	// 创建 mock 对象, 下面的 NewMockTmpTableDaoI 由 mockgen 创建
+	// 在 src 目录下运行 mockgen.exe -source=".\internal\dao\tmp.go" -destination=".\internal\dao\tmp_mock.go" -package=dao
 	m := dao.NewMockTmpTableDaoI(ctrl)
-	m.EXPECT().SelectByName(gomock.Eq("tom")).Return(
+	m.EXPECT().SelectByName(gomock.Any(), gomock.Eq("tom")).Return(
 		[]entity.TmpTable{}, nil,
 	).Times(1)
 
+	// mock gin.Context
 	req, _ := json.Marshal(access.ParaIn{Data: "tom"})
 	c := gin.Context{Writer: &fakeWriter{}}
 	c.Request = &http.Request{}
@@ -75,7 +77,7 @@ func TestServerTime(t *testing.T) {
 	raw, err := getTime(client)
 	assert.Nil(t, err)
 	var result old.ServiceResult
-	json.Unmarshal(raw.Body(), &result)
+	_ = json.Unmarshal(raw.Body(), &result)
 	assert.Equal(t, float64(1676540186616), result.Result)
 	assert.Equal(t, true, result.Success)
 }
