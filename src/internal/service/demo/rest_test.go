@@ -50,7 +50,7 @@ func TestDbSelect(t *testing.T) {
 	).Times(1)
 
 	// mock gin.Context
-	req, _ := json.Marshal(access.ParaIn{Data: "tom"})
+	req, _ := json.Marshal(access.ParaIn[string]{Data: "tom"})
 	c := gin.Context{Writer: &fakeWriter{}}
 	c.Request = &http.Request{}
 	c.Request.Body = io.NopCloser(bytes.NewReader(req))
@@ -76,9 +76,9 @@ func TestServerTime(t *testing.T) {
 
 	raw, err := getTime(client)
 	assert.Nil(t, err)
-	var result old.ServiceResult
+	var result old.ServiceResult[int64]
 	_ = json.Unmarshal(raw.Body(), &result)
-	assert.Equal(t, float64(1676540186616), result.Result)
+	assert.Equal(t, int64(1676540186616), result.Result)
 	assert.Equal(t, true, result.Success)
 }
 
