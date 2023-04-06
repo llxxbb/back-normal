@@ -1,3 +1,4 @@
 **/*.exe
 config_product.yml
 src/.idea
+.idea
