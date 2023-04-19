@@ -1,10 +1,11 @@
 package tool
 
 import (
-	"github.com/go-resty/resty/v2"
-	"github.com/pinpoint-apm/pinpoint-go-agent/plugin/http"
-	"go.uber.org/zap"
 	"time"
+
+	"github.com/go-resty/resty/v2"
+	pphttp "github.com/pinpoint-apm/pinpoint-go-agent/plugin/http"
+	"go.uber.org/zap"
 )
 
 type RpcConfig struct {
@@ -26,22 +27,11 @@ func (c *RpcConfig) Print() {
 	zap.L().Info("-- ", zap.String("baseUrl.appTwo", c.BUApp))
 }
 
-func (c *RpcConfig) NewGateWayClient() *resty.Client {
+func RpcClient(timeOut int, baseUrl string) *resty.Client {
 	client := pphttp.WrapClient(nil) // pinpoint
 	rtn := resty.NewWithClient(client)
-	rtn.SetTimeout(time.Duration(c.Timeout) * time.Millisecond)
+	rtn.SetTimeout(time.Duration(timeOut) * time.Millisecond)
 	rtn.SetHeader("Content-Type", "application/json")
-	// 仅限于本 DEMO 使用
-	rtn.SetHeader("HOST", "gateway.cdeledu.com")
-	rtn.SetBaseURL(c.BUGateway)
-	return rtn
-}
-
-// 用于测试 PinPoint 间的连通性
-func (c *RpcConfig) NewApp2Client() *resty.Client {
-	client := pphttp.WrapClient(nil) // pinpoint
-	rtn := resty.NewWithClient(client)
-	rtn.SetTimeout(time.Duration(c.Timeout) * time.Millisecond)
-	rtn.SetBaseURL(c.BUApp)
+	rtn.SetBaseURL(baseUrl)
 	return rtn
 }
