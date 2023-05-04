@@ -5,7 +5,7 @@ prj:
 
 gin.release: true
 
-port: 80
+port: 19000
 
 pinpoint:
   url: pinpoint.cdel.local
