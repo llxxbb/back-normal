@@ -1,6 +1,7 @@
 package tool
 
 import (
+	"net/http"
 	"time"
 
 	"github.com/go-resty/resty/v2"
@@ -29,6 +30,11 @@ func (c *RpcConfig) Print() {
 
 func RpcClient(timeOut int, baseUrl string) *resty.Client {
 	client := pphttp.WrapClient(nil) // pinpoint
+	return ClientNoPP(timeOut, baseUrl, client)
+}
+
+// ClientNoPP Compared with upper: only no pinPoint. Can be used for testing
+func ClientNoPP(timeOut int, baseUrl string, client *http.Client) *resty.Client {
 	rtn := resty.NewWithClient(client)
 	rtn.SetTimeout(time.Duration(timeOut) * time.Millisecond)
 	rtn.SetHeader("Content-Type", "application/json")
