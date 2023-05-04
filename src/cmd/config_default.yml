@@ -1,7 +1,7 @@
 prj:
   name: back-normal
   version: v0.0.2
-  id: -100  # 为本应用在信息化平台注册后的ID值
+  id: -100 # 为本应用在信息化平台注册后的ID值
 
 gin.release: true
 

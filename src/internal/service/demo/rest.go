@@ -33,7 +33,7 @@ func DbSelect(c *gin.Context) {
 	rows, err := config.CTX.TmpDao.SelectByName(c.Request.Context(), in.Data)
 	if err != nil {
 		zap.S().Warn(err)
-		c.JSON(http.StatusOK, access.GetErrorResultD(def.ET_ENV, def.E_ENV.Code, def.E_ENV.Msg+err.Error(), nil))
+		c.JSON(http.StatusOK, access.GetErrorResultD[[]int](def.ET_ENV, def.E_ENV.Code, def.E_ENV.Msg+err.Error(), nil))
 		return
 	}
 	c.JSON(http.StatusOK, rows)
@@ -44,7 +44,7 @@ func DbSelectCached(c *gin.Context) {
 	rows, err := config.CTX.TmpCache.SelectByName(c.Request.Context(), in.Data)
 	if err != nil {
 		zap.S().Warn(err)
-		c.JSON(http.StatusOK, access.GetErrorResultD(def.ET_ENV, def.E_ENV.Code, def.E_ENV.Msg+err.Error(), nil))
+		c.JSON(http.StatusOK, access.GetErrorResultD[[]int](def.ET_ENV, def.E_ENV.Code, def.E_ENV.Msg+err.Error(), nil))
 		return
 	}
 	c.JSON(http.StatusOK, rows)
@@ -54,7 +54,7 @@ func DBTimeout(c *gin.Context) {
 	zap.L().Info("begin")
 	err := config.CTX.TmpDao.Delay()
 	if err != nil {
-		c.JSON(http.StatusOK, access.GetErrorResultD(def.ET_ENV, def.E_ENV.Code, def.E_ENV.Msg+err.Error(), nil))
+		c.JSON(http.StatusOK, access.GetErrorResultD[string](def.ET_ENV, def.E_ENV.Code, def.E_ENV.Msg+err.Error(), nil))
 		return
 	}
 	c.String(http.StatusGatewayTimeout, "O! no, it should be timeout")
@@ -63,7 +63,7 @@ func DBTimeout(c *gin.Context) {
 func RemoteCall(c *gin.Context) {
 	resp, err := getTime(config.CTX.GatewayClient)
 	if err != nil {
-		c.JSON(http.StatusOK, access.GetErrorResultD(def.ET_ENV, def.E_ENV.Code, def.E_ENV.Msg+err.Error(), nil))
+		c.JSON(http.StatusOK, access.GetErrorResultD[old.ServiceResult[any]](def.ET_ENV, def.E_ENV.Code, def.E_ENV.Msg+err.Error(), nil))
 		return
 	}
 

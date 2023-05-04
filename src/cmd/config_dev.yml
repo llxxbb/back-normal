@@ -3,6 +3,7 @@ port: 8080
 gin.release: false
 
 pinpoint:
+  url: pretest-pinpoint.cdel.com
   sampling:
     counterRate: 2
 
