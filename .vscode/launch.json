@@ -10,7 +10,7 @@
       "request": "launch",
       "mode": "auto",
       "env": {
-        "env": "dev",
+        "PRJ_ENV": "dev",
         "mysql.conns.maxOpen": "20"
       },
       "program": "${workspaceFolder}/src/cmd/main.go"
