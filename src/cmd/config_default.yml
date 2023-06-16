@@ -8,7 +8,10 @@ gin.release: true
 port: 19000
 
 pinpoint:
-  url: pinpoint.cdel.local
+  url: pinpoint-collector.cdel.local
+  agentPort: 29991
+  statPort: 29992
+  spanPort: 29993
   sampling:
     counterRate: 20
 
