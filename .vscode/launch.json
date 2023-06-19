@@ -13,14 +13,14 @@
         "PRJ_ENV": "dev",
         "mysql.conns.maxOpen": "20"
       },
-      "program": "${workspaceFolder}/src/cmd/main.go"
+      "program": "${workspaceFolder}/src/cmd/"
     },
     {
       "name": "main",
       "type": "go",
       "request": "launch",
       "mode": "auto",
-      "program": "${workspaceFolder}/src/cmd/main.go"
+      "program": "${workspaceFolder}/src/cmd/"
     }
   ]
 }
