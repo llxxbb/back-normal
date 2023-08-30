@@ -35,3 +35,11 @@ mockgen -source=".\internal\dao\tmp.go" -destination=".\internal\dao\tmp_mock.go
 - 这里生成的 mock 代码没有放到 _test.go 文件里，因为_test.go 中的定义不能跨包使用。这会增加不必要的生产代码，如本示例可执行文件增加了2k。
 
 - 不能跨包使用 test 中的代码问题已有人反馈，但官方拒绝了此提议，原因为改动太大。变通的方法是：哪里使用生成到哪里。
+
+## Q & A
+
+**Q：编译时遇到 “no required module provides package xxx; to add it:”**
+
+ 其中一个场景，在 src 目录下运行 go build ...，会出现此问题。解决方法：
+
+- 编译时明确指定 main.go。 如在根目录下执行：go build ./src/cmd/main.go
