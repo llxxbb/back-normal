@@ -5,6 +5,7 @@ import (
 	"cdel/demo/Normal/config"
 	"cdel/demo/Normal/tool"
 	_ "embed"
+
 	bc "github.com/llxxbb/go-BaseConfig/config"
 
 	"go.uber.org/zap"
@@ -16,7 +17,7 @@ var configDefault []byte
 func main() {
 	// 初始化配置, 使用嵌入的缺省配置文件
 	bc.FDefault = configDefault
-	cfg := config.DemoConfig{}
+	cfg := config.ProjectConfig{}
 	bc.FillConfig(&cfg, &cfg.BaseConfig)
 	cfg.Redis.Amend(&cfg.BaseConfig) // 修订 Redis Prefix
 	// 初始化日志

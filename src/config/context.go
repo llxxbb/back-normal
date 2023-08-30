@@ -11,7 +11,7 @@ import (
 var CTX Context
 
 type Context struct {
-	Cfg           *DemoConfig
+	Cfg           *ProjectConfig
 	DemoDB        *sql.DB
 	GatewayClient *resty.Client
 	App2Client    *resty.Client
@@ -19,7 +19,7 @@ type Context struct {
 	TmpCache      dao.TmpTableDaoI
 }
 
-func (c *Context) Init(cfg *DemoConfig) {
+func (c *Context) Init(cfg *ProjectConfig) {
 	c.Cfg = cfg
 	// 数据库及 dao 初始化 --------------------------
 	c.DemoDB = cfg.Mysql.DemoDBInit()

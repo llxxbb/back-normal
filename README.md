@@ -36,6 +36,18 @@ mockgen -source=".\internal\dao\tmp.go" -destination=".\internal\dao\tmp_mock.go
 
 - 不能跨包使用 test 中的代码问题已有人反馈，但官方拒绝了此提议，原因为改动太大。变通的方法是：哪里使用生成到哪里。
 
+## 使用说明
+
+- 替换 module 名，注意需要批量替换所有相关的 import
+
+- 启动和配置位于 cmd 目录下
+
+- 配置，参考 [go-BaseConfig](https://github.com/llxxbb/go-BaseConfig)：
+  
+  - 对于不随部署环境变化的配置项放置于：config_default.yml 配置文件中
+  
+  - 环境配置文件为 config_[env].yml
+
 ## Q & A
 
 **Q：编译时遇到 “no required module provides package xxx; to add it:”**
@@ -43,3 +55,5 @@ mockgen -source=".\internal\dao\tmp.go" -destination=".\internal\dao\tmp_mock.go
  其中一个场景，在 src 目录下运行 go build ...，会出现此问题。解决方法：
 
 - 编译时明确指定 main.go。 如在根目录下执行：go build ./src/cmd/main.go
+  
+  

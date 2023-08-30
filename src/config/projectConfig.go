@@ -2,11 +2,12 @@ package config
 
 import (
 	"cdel/demo/Normal/tool"
+
 	bc "github.com/llxxbb/go-BaseConfig/config"
 	"go.uber.org/zap"
 )
 
-type DemoConfig struct {
+type ProjectConfig struct {
 	bc.BaseConfig
 	Mysql    MysqlConfig
 	Rpc      tool.RpcConfig
@@ -14,14 +15,14 @@ type DemoConfig struct {
 	Redis    tool.RedisConfig
 }
 
-func (c *DemoConfig) AppendFieldMap(fm map[string]string) {
+func (c *ProjectConfig) AppendFieldMap(fm map[string]string) {
 	c.Mysql.AppendFieldMap(fm)
 	c.Rpc.AppendFieldMap(fm)
 	c.Redis.AppendFieldMap(fm)
 	c.PinPoint.AppendFieldMap(fm)
 }
 
-func (c *DemoConfig) Print() {
+func (c *ProjectConfig) Print() {
 	zap.L().Info("++++++++++++++ config info begin: ++++++++++++++")
 	c.BaseConfig.Print()
 	c.Mysql.Print()
