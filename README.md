@@ -55,5 +55,3 @@ mockgen -source=".\internal\dao\tmp.go" -destination=".\internal\dao\tmp_mock.go
  其中一个场景，在 src 目录下运行 go build ...，会出现此问题。解决方法：
 
 - 编译时明确指定 main.go。 如在根目录下执行：go build ./src/cmd/main.go
-  
-  
