@@ -1,7 +1,6 @@
 package demo
 
 import (
-	"cdel/demo/Normal/config"
 	"encoding/json"
 	"net/http"
 
@@ -16,21 +15,21 @@ import (
 
 func V1(c *gin.Context) {
 	in := old.Request[any]{}
-	c.ShouldBindJSON(&in)
+	_ = c.ShouldBindJSON(&in)
 	out := old.GetSuccess(in.Params)
 	c.JSON(http.StatusOK, out)
 }
 func V2(c *gin.Context) {
 	in := access.ParaIn[any]{}
-	c.ShouldBindJSON(&in)
+	_ = c.ShouldBindJSON(&in)
 	out := access.GetSuccessResult(in.Data)
 	c.JSON(http.StatusOK, out)
 }
 
 func DbSelect(c *gin.Context) {
 	in := access.ParaIn[string]{}
-	c.ShouldBindJSON(&in)
-	rows, err := config.CTX.TmpDao.SelectByName(c.Request.Context(), in.Data)
+	_ = c.ShouldBindJSON(&in)
+	rows, err := tmpDao.SelectByName(c.Request.Context(), in.Data)
 	if err != nil {
 		zap.S().Warn(err)
 		c.JSON(http.StatusOK, access.GetErrorResultD[[]int](def.ET_ENV, def.E_ENV.Code, def.E_ENV.Msg+err.Error(), nil))
@@ -40,8 +39,8 @@ func DbSelect(c *gin.Context) {
 }
 func DbSelectCached(c *gin.Context) {
 	in := access.ParaIn[string]{}
-	c.ShouldBindJSON(&in)
-	rows, err := config.CTX.TmpCache.SelectByName(c.Request.Context(), in.Data)
+	_ = c.ShouldBindJSON(&in)
+	rows, err := tmpCache.SelectByName(c.Request.Context(), in.Data)
 	if err != nil {
 		zap.S().Warn(err)
 		c.JSON(http.StatusOK, access.GetErrorResultD[[]int](def.ET_ENV, def.E_ENV.Code, def.E_ENV.Msg+err.Error(), nil))
@@ -52,7 +51,7 @@ func DbSelectCached(c *gin.Context) {
 
 func DBTimeout(c *gin.Context) {
 	zap.L().Info("begin")
-	err := config.CTX.TmpDao.Delay()
+	err := tmpDao.Delay()
 	if err != nil {
 		c.JSON(http.StatusOK, access.GetErrorResultD[string](def.ET_ENV, def.E_ENV.Code, def.E_ENV.Msg+err.Error(), nil))
 		return
@@ -61,7 +60,7 @@ func DBTimeout(c *gin.Context) {
 }
 
 func RemoteCall(c *gin.Context) {
-	resp, err := getTime(config.CTX.GatewayClient)
+	resp, err := getTime(gatewayClient)
 	if err != nil {
 		c.JSON(http.StatusOK, access.GetErrorResultD[old.ServiceResult[any]](def.ET_ENV, def.E_ENV.Code, def.E_ENV.Msg+err.Error(), nil))
 		return
@@ -70,7 +69,7 @@ func RemoteCall(c *gin.Context) {
 	// no use here, just only show the usage of the json.Unmarshal
 	raw := resp.Body()
 	rtn := old.ServiceResult[any]{}
-	json.Unmarshal(raw, &rtn)
+	_ = json.Unmarshal(raw, &rtn)
 	zap.S().Debug(rtn)
 
 	// return
@@ -84,8 +83,7 @@ func getTime(client *resty.Client) (*resty.Response, error) {
 }
 
 func App2(c *gin.Context) {
-
-	request := config.CTX.App2Client.R()
+	request := app2Client.R()
 	// important! use context to chain two apps
 	request.SetContext(c.Request.Context())
 	rtn, _ := request.Get("/isAlive")

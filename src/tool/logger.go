@@ -15,7 +15,7 @@ const (
 	maxAge         = 10 // 保留10天
 )
 
-func InitLogger(path string, prod bool) {
+func InitLogger(path string, prod bool) *zap.Logger {
 
 	// encoderFileCfg and debug
 	encoderFileCfg := newConfig()
@@ -62,6 +62,7 @@ func InitLogger(path string, prod bool) {
 	)
 	logger := zap.New(core, zap.AddCaller())
 	zap.ReplaceGlobals(logger)
+	return logger
 }
 
 func newConfig() zapcore.EncoderConfig {

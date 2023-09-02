@@ -10,13 +10,12 @@ import (
 	"go.uber.org/zap"
 )
 
-func SetupRouter() *gin.Engine {
-	cfg := config.CTX.Cfg
+func SetupRouter(cfg *config.ProjectConfig) *gin.Engine {
 	if cfg.GinRelease {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	r := gin.New()
-	r.SetTrustedProxies(nil)
+	_ = r.SetTrustedProxies(nil)
 
 	// 设置中间间-----------------------------------
 	// combine with zap

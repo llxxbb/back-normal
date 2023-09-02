@@ -3,6 +3,7 @@ package main
 import (
 	"cdel/demo/Normal/api"
 	"cdel/demo/Normal/config"
+	"cdel/demo/Normal/internal/service"
 	"cdel/demo/Normal/tool"
 	_ "embed"
 
@@ -22,17 +23,20 @@ func main() {
 	cfg.Redis.Amend(&cfg.BaseConfig) // 修订 Redis Prefix
 	// 初始化日志
 	tool.InitLogger(cfg.LogPath, cfg.Env == bc.VAL_PRODUCT)
-	defer zap.L().Sync()
+	defer func(l *zap.Logger) {
+		_ = l.Sync()
+	}(zap.L())
+
 	// 打印配置, 注意需要先初始化日志。
 	cfg.Print()
 
 	// init pinpoint
 	cfg.PinPoint.InitPinPoint(cfg.ProjectName, cfg.Host)
 	// 初始化上下文，如数据库
-	config.CTX.Init(&cfg)
+	service.InitService(&cfg)
 
-	r := api.SetupRouter()
+	r := api.SetupRouter(&cfg)
 
 	// start web
-	r.Run(":" + cfg.Port)
+	_ = r.Run(":" + cfg.Port)
 }
