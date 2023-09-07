@@ -1,7 +1,7 @@
 package demo
 
 import (
-	"encoding/json"
+	"github.com/goccy/go-json"
 	"net/http"
 
 	"gitlab.cdel.local/platform/go/platform-common/access"

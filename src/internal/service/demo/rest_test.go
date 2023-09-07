@@ -3,10 +3,9 @@ package demo
 import (
 	"bufio"
 	"bytes"
-	"cdel/demo/Normal/config"
 	"cdel/demo/Normal/internal/dao"
 	"cdel/demo/Normal/internal/entity"
-	"encoding/json"
+	"github.com/goccy/go-json"
 	"io"
 	"net"
 	"net/http"
@@ -54,9 +53,8 @@ func TestDbSelect(t *testing.T) {
 	c := gin.Context{Writer: &fakeWriter{}}
 	c.Request = &http.Request{}
 	c.Request.Body = io.NopCloser(bytes.NewReader(req))
-	config.CTX = config.Context{TmpDao: m}
+	tmpDao = m
 	DbSelect(&c)
-
 }
 
 // will be intercepted
