@@ -46,7 +46,7 @@ mockgen -source=".\internal\dao\tmp.go" -destination=".\internal\dao\tmp_mock.go
   
   - 对于不随部署环境变化的配置项放置于：config_default.yml 配置文件中
   
-  - 环境配置文件为 config_[env].yml
+  - 环境配置文件为 config_[PRJ_ENV].yml， 请使用 PRJ_ENV 环境变量来定义想要加载的配置文件
 
 ## Q & A
 
