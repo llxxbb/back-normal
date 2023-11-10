@@ -1,17 +1,13 @@
 package demo
 
 import (
-	"bufio"
-	"bytes"
 	"cdel/demo/Normal/internal/dao"
 	"cdel/demo/Normal/internal/entity"
+	"cdel/demo/Normal/tool"
 	"github.com/goccy/go-json"
-	"io"
-	"net"
 	"net/http"
 	"testing"
 
-	"github.com/gin-gonic/gin"
 	"github.com/go-resty/resty/v2"
 	"github.com/golang/mock/gomock"
 	"github.com/h2non/gock"
@@ -21,24 +17,6 @@ import (
 )
 
 // used for TestDbSelect --------------------------
-type fakeWriter struct {
-}
-
-func (f *fakeWriter) WriteHeader(_ int)               {}
-func (f *fakeWriter) CloseNotify() <-chan bool        { return nil }
-func (f *fakeWriter) Flush()                          {}
-func (f *fakeWriter) Header() http.Header             { return map[string][]string{} }
-func (f *fakeWriter) Status() int                     { return 0 }
-func (f *fakeWriter) Size() int                       { return 0 }
-func (f *fakeWriter) WriteString(string) (int, error) { return 0, nil }
-func (f *fakeWriter) Write([]byte) (int, error)       { return 0, nil }
-func (f *fakeWriter) Written() bool                   { return false }
-func (f *fakeWriter) WriteHeaderNow()                 {}
-func (f *fakeWriter) Pusher() http.Pusher             { return nil }
-func (f *fakeWriter) Hijack() (net.Conn, *bufio.ReadWriter, error) {
-	return nil, &bufio.ReadWriter{}, nil
-}
-
 func TestDbSelect(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	// 创建 mock 对象, 下面的 NewMockTmpTableDaoI 由 mockgen 创建
@@ -47,14 +25,11 @@ func TestDbSelect(t *testing.T) {
 	m.EXPECT().SelectByName(gomock.Any(), gomock.Eq("tom")).Return(
 		[]entity.TmpTable{}, nil,
 	).Times(1)
+	tmpDao = m
 
 	// mock gin.Context
-	req, _ := json.Marshal(access.ParaIn[string]{Data: "tom"})
-	c := gin.Context{Writer: &fakeWriter{}}
-	c.Request = &http.Request{}
-	c.Request.Body = io.NopCloser(bytes.NewReader(req))
-	tmpDao = m
-	DbSelect(&c)
+	req := access.ParaIn[string]{Data: "tom"}
+	tool.GinCall(req, DbSelect)
 }
 
 // will be intercepted
