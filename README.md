@@ -12,6 +12,8 @@
 
 ## 运行前准备
 
+**修改项目相关信息**：编辑 src/cmd/config_default.yml文件，修改`prj`相关属性。
+
 **模块重命名**：替换 module 名，注意需要批量替换所有相关的 import
 
 **设置环境变量**：PRJ_EVN，用于加载对应的配置文件，如PRJ_ENV=dev。有关配置请参考 [go-BaseConfig](https://github.com/llxxbb/go-BaseConfig)
