@@ -18,7 +18,13 @@
 
 **设置环境变量**：PRJ_EVN，用于加载对应的配置文件，如PRJ_ENV=dev。有关配置请参考 [go-BaseConfig](https://github.com/llxxbb/go-BaseConfig)
 
+**配置文件**：位于 src/cmd 目录下
+
 **设置工作目录**：请指定到 src/cmd下，否则IDE环境下可能找不到配置文件
+
+## 启动项目
+
+启动文件位于 src/cmd/main.go
 
 ## 编译
 
