@@ -2,8 +2,6 @@ package api
 
 import (
 	"cdel/demo/Normal/config"
-	"cdel/demo/Normal/internal/service"
-	"cdel/demo/Normal/internal/service/demo"
 	ginzap "github.com/gin-contrib/zap"
 	"github.com/gin-gonic/gin"
 	ppgin "github.com/pinpoint-apm/pinpoint-go-agent/plugin/gin"
@@ -24,30 +22,11 @@ func SetupRouter(cfg *config.ProjectConfig) *gin.Engine {
 	// use pinpoint
 	r.Use(ppgin.Middleware())
 
-	// 设置中间间-----------------------------------
-	// 用于监控
-	r.GET("/monitorDB/monitor", service.IsAlive)
-	r.GET("/monitorDB/monitor.shtml", service.IsAlive)
-	r.GET("isAlive", service.IsAlive)
+	// 路由信息 -----------------------------------------------
+	// 需要自行定制的路由
+	routeApp(r)
+	// 固定的、规范性的，不要轻易变更的路由
+	routePreDefined(r)
 
-	// 项目版本查询
-	r.GET("/version", service.ProjectVersion)
-
-	gDemo := r.Group("/demo")
-	{
-		gDemo.POST("/v1", demo.V1)
-		gDemo.POST("/v2", demo.V2)
-		gDemo.POST("/rest", demo.RemoteCall)
-	}
-	gTmp := r.Group("/tmp")
-	{
-		gTmp.POST("/byName", demo.DbSelect)
-		gTmp.POST("/byNameCached", demo.DbSelectCached)
-		gTmp.POST("/timeout", demo.DBTimeout)
-	}
-	gPinPoint := r.Group("/pp")
-	{
-		gPinPoint.GET("/app2", demo.App2)
-	}
 	return r
 }
