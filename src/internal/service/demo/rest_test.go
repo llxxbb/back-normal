@@ -5,6 +5,7 @@ import (
 	"cdel/demo/Normal/internal/entity"
 	"cdel/demo/Normal/tool"
 	"github.com/goccy/go-json"
+	"io"
 	"net/http"
 	"testing"
 
@@ -23,13 +24,34 @@ func TestDbSelect(t *testing.T) {
 	// 在 src 目录下运行 mockgen.exe -source=".\internal\dao\tmp.go" -destination=".\internal\dao\tmp_mock.go" -package=dao
 	m := dao.NewMockTmpTableDaoI(ctrl)
 	m.EXPECT().SelectByName(gomock.Any(), gomock.Eq("tom")).Return(
-		[]entity.TmpTable{}, nil,
+		[]entity.TmpTable{
+			{
+				Id:   1,
+				Name: "lxb",
+			},
+			{
+				Id:   2,
+				Name: "tom",
+			},
+		}, nil,
 	).Times(1)
 	tmpDao = m
 
 	// mock gin.Context
 	req := access.ParaIn[string]{Data: "tom"}
-	tool.GinCall(req, DbSelect)
+	result := tool.GinCall(req, DbSelect)
+	// verify
+	assert.Equal(t, http.StatusOK, result.Code)
+	all, _ := io.ReadAll(result.Body)
+	var des []entity.TmpTable
+	err := json.Unmarshal(all, &des)
+
+	assert.Nil(t, err)
+	assert.Equal(t, 2, len(des))
+	assert.Equal(t, 1, des[0].Id)
+	assert.Equal(t, 2, des[1].Id)
+	assert.Equal(t, "lxb", des[0].Name)
+	assert.Equal(t, "tom", des[1].Name)
 }
 
 // will be intercepted
