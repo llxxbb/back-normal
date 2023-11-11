@@ -7,12 +7,20 @@ import (
 	"go.uber.org/zap"
 )
 
+// PrjCfg 全局配置
+var PrjCfg *ProjectConfig
+
 type ProjectConfig struct {
 	bc.BaseConfig
 	Mysql    MysqlConfig
 	Rpc      tool.RpcConfig
 	PinPoint tool.PinPointConfig
 	Redis    tool.RedisConfig
+}
+
+func New() *ProjectConfig {
+	PrjCfg = &ProjectConfig{}
+	return PrjCfg
 }
 
 func (c *ProjectConfig) AppendFieldMap(fm map[string]string) {
