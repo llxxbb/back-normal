@@ -3,7 +3,6 @@ package demo
 import (
 	"cdel/demo/Normal/config"
 	"cdel/demo/Normal/internal/dao"
-	"cdel/demo/Normal/tool"
 	"github.com/go-resty/resty/v2"
 )
 
@@ -22,8 +21,7 @@ func InitDemo(cfg *config.ProjectConfig) {
 	tmpCache = dao.GetCacheTmp(tmpDao, redisClient, &cfg.Redis) // cached dao
 
 	// rpc 初始化 --------------------------
-	gatewayClient := tool.RpcClient(cfg.Rpc.Timeout, cfg.Rpc.BUGateway)
+	gatewayClient := cfg.GateWay.NewClient()
 	gatewayClient.SetHeader("HOST", "gateway.cdeledu.com")
-	app2Client = tool.RpcClient(cfg.Rpc.Timeout, cfg.Rpc.BUApp)
-
+	app2Client = cfg.App2.NewClient()
 }

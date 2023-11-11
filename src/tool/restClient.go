@@ -1,6 +1,7 @@
 package tool
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
@@ -10,27 +11,25 @@ import (
 )
 
 type RpcConfig struct {
-	Timeout   int
-	BUGateway string
-	BUApp     string
+	Timeout int
+	BaseUrl string
+	Name    string // must equal `ProjectConfig`'s property name and so in the yaml file
 }
 
 func (c *RpcConfig) AppendFieldMap(fMap map[string]string) {
-	fMap["rpc.timeOut"] = "Rpc.Timeout"
-	fMap["rpc.baseUrl.gateway"] = "Rpc.BUGateway"
-	fMap["rpc.baseUrl.appTwo"] = "Rpc.BUApp"
+	fMap[c.Name+".timeOut"] = c.Name + ".Timeout"
+	fMap[c.Name+".baseUrl"] = c.Name + ".BaseUrl"
 }
 
 func (c *RpcConfig) Print() {
-	zap.L().Info("------------ remote process call ------------")
+	zap.L().Info(fmt.Sprintf("------------ remote process call for: %s  ------------", c.Name))
 	zap.L().Info("-- ", zap.Int("timeout", c.Timeout))
-	zap.L().Info("-- ", zap.String("baseUrl.gateway", c.BUGateway))
-	zap.L().Info("-- ", zap.String("baseUrl.appTwo", c.BUApp))
+	zap.L().Info("-- ", zap.String("baseUrl", c.BaseUrl))
 }
 
-func RpcClient(timeOut int, baseUrl string) *resty.Client {
+func (c *RpcConfig) NewClient() *resty.Client {
 	client := pphttp.WrapClient(nil) // pinpoint
-	return ClientNoPP(timeOut, baseUrl, client)
+	return ClientNoPP(c.Timeout, c.BaseUrl, client)
 }
 
 // ClientNoPP Compared with upper: only no pinPoint. Can be used for testing

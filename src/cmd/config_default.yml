@@ -17,11 +17,12 @@ pinpoint:
 
 log.root: /web/logs
 
-rpc:
+GateWay:
   timeOut: 3000
-  baseUrl:
-    gateway: http://10.20.14.174/op_v2
-    appTwo: http://localhost:19000
+  baseUrl: http://10.20.14.174/op_v2
+App2:
+  timeOut: 1000
+  baseUrl: http://localhost:19000
 
 mysql:
   db: doorman
