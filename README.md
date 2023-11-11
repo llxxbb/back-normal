@@ -20,6 +20,10 @@
 
 **配置文件**：位于 src/cmd 目录下
 
+**变更路由信息**：请参考 src/api/routeApp.go文件
+
+**业务功能初始化**：请参考 src/internal/service/demo/init.go
+
 **设置工作目录**：请指定到 src/cmd下，否则IDE环境下可能找不到配置文件
 
 ## 启动项目
@@ -46,7 +50,13 @@
 
 > go mod tidy
 
-## 生成 mock 代码
+## 其他说明
+
+**接口服务端测试**：可使用`tool.GinCall`工具 ，示例`TestDbSelect`
+
+**接口客户端mock**:  可使用 [gock](https://github.com/h2non/gock),  示例 `TestServerTime`
+
+### 生成 mock 代码
 
 使用 [golang/mock](https://github.com/golang/mock),
 
