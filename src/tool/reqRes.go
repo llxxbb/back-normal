@@ -1,6 +1,7 @@
 package tool
 
 import (
+	"context"
 	"github.com/gin-gonic/gin"
 	"gitlab.cdel.local/platform/go/platform-common/access"
 	"gitlab.cdel.local/platform/go/platform-common/def"
@@ -8,12 +9,12 @@ import (
 	"net/http"
 )
 
-func RequestResponse[T any, R any](rg *gin.RouterGroup, path string, fun func(p T) (R, *def.CustomError)) {
+func RequestResponse[T any, R any](rg *gin.RouterGroup, path string, fun func(c context.Context, p T) (R, *def.CustomError)) {
 	rg.POST(path, func(c *gin.Context) {
 		zap.L().Debug("accessed", zap.String("url", c.Request.URL.Path))
 		in := access.ParaIn[T]{}
 		_ = c.ShouldBindJSON(&in)
-		out := access.GetResultWithParam(in.Data, fun)
+		out := access.GetResultByParaCtx(c.Request.Context(), in.Data, fun)
 		c.JSON(http.StatusOK, out)
 	})
 }

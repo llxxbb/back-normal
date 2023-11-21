@@ -2,6 +2,7 @@ package api
 
 import (
 	"cdel/demo/Normal/internal/service/demo"
+	"cdel/demo/Normal/tool"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,7 +15,9 @@ func routeApp(r *gin.Engine) {
 	}
 	gTmp := r.Group("/tmp")
 	{
-		gTmp.POST("/byName", demo.DbSelect)
+		// 注意输入参数仅适用于 `access.ParaIn`，DbSelect 不需要进行参数处理。推荐！
+		tool.RequestResponse(gTmp, "byName", demo.DbSelect)
+		// 常规处理方式，DbSelectCached 需要自行处理参数。，
 		gTmp.POST("/byNameCached", demo.DbSelectCached)
 		gTmp.POST("/timeout", demo.DBTimeout)
 	}

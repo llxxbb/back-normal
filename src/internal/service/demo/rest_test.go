@@ -4,6 +4,7 @@ import (
 	"cdel/demo/Normal/internal/dao"
 	"cdel/demo/Normal/internal/entity"
 	"cdel/demo/Normal/tool"
+	"github.com/gin-gonic/gin"
 	"github.com/goccy/go-json"
 	"io"
 	"net/http"
@@ -39,7 +40,13 @@ func TestDbSelect(t *testing.T) {
 
 	// mock gin.Context
 	req := access.ParaIn[string]{Data: "tom"}
-	result := tool.GinCall(req, DbSelect)
+	myfun := func(c *gin.Context) {
+		in := access.ParaIn[string]{}
+		_ = c.ShouldBindJSON(&in)
+		rtn, _ := DbSelect(c.Request.Context(), in.Data)
+		c.JSON(http.StatusOK, rtn)
+	}
+	result := tool.GinCall(req, myfun)
 	// verify
 	assert.Equal(t, http.StatusOK, result.Code)
 	all, _ := io.ReadAll(result.Body)

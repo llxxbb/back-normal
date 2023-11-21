@@ -1,6 +1,8 @@
 package demo
 
 import (
+	"cdel/demo/Normal/internal/entity"
+	"context"
 	"github.com/goccy/go-json"
 	"net/http"
 
@@ -26,16 +28,13 @@ func V2(c *gin.Context) {
 	c.JSON(http.StatusOK, out)
 }
 
-func DbSelect(c *gin.Context) {
-	in := access.ParaIn[string]{}
-	_ = c.ShouldBindJSON(&in)
-	rows, err := tmpDao.SelectByName(c.Request.Context(), in.Data)
+func DbSelect(c context.Context, name string) ([]entity.TmpTable, *def.CustomError) {
+	rows, err := tmpDao.SelectByName(c, name)
 	if err != nil {
 		zap.S().Warn(err)
-		c.JSON(http.StatusOK, access.GetErrorResultD[[]int](def.ET_ENV, def.E_ENV.Code, def.E_ENV.Msg+err.Error(), nil))
-		return
+		return nil, def.NewCustomError(def.ET_ENV, def.ENV_C, def.ENV_M+err.Error(), nil)
 	}
-	c.JSON(http.StatusOK, rows)
+	return rows, nil
 }
 func DbSelectCached(c *gin.Context) {
 	in := access.ParaIn[string]{}
