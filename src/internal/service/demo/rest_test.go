@@ -64,7 +64,7 @@ func TestDbSelect(t *testing.T) {
 // will be intercepted
 var client = resty.New()
 
-func TestServerTime(t *testing.T) {
+func TestServerTime_getAllMasterErr(t *testing.T) {
 	// 注意 gock 拦截时，resty 的 BaseUrl 不会附加到请求路径上，
 	// 所以下面的 New 必须用空串。
 	gock.New("").
