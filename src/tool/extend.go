@@ -7,3 +7,12 @@ func MapCopy[K comparable, V any](from map[K]V) map[K]V {
 	}
 	return rtn
 }
+func MapAppend[K comparable, V any](from map[K]V, to map[K]V) map[K]V {
+	if to == nil {
+		return from
+	}
+	for k, v := range from {
+		to[k] = v
+	}
+	return to
+}
