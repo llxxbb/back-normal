@@ -4,9 +4,11 @@
 
 可以将本项目作为后端开发的模板。
 
+[用到的框架](http://gitlab.cdel.local/arch_job/training/blob/master/doc/tech-stack/go/go-qz-framework.md)
+
 [go 教程](http://gitlab.cdel.local/arch_job/training/blob/master/doc/tech-stack/go/go-tour.md)
 
-[go 项目规范](http://gitlab.cdel.local/dev-specification/development/blob/master/doc/go-spec.md)
+[go 项目部署规范](http://gitlab.cdel.local/dev-specification/development/blob/master/doc/go-spec.md)
 
 [服务开发规范](http://gitlab.cdel.local/dev-specification/development/tree/master)
 
