@@ -14,6 +14,7 @@ func SetupRouter(cfg *config.ProjectConfig) *gin.Engine {
 	}
 	r := gin.New()
 	_ = r.SetTrustedProxies(nil)
+	r.UseH2C = true
 
 	// 设置中间间-----------------------------------
 	// combine with zap
