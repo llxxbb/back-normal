@@ -1,0 +1,46 @@
+package dao
+
+import (
+	"cdel/demo/Normal/config"
+	"cdel/demo/Normal/internal/entity"
+	"context"
+	"gitlab.cdel.local/platform/go/platform-common/def"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+)
+
+type GromTableDao struct {
+	db *gorm.DB
+}
+
+func New(cfg *config.MysqlConfig) (*GromTableDao, *def.CustomError) {
+	dsn := cfg.FormatDSN()
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
+		PrepareStmt: true,
+	})
+	if err != nil {
+		return nil, def.NewCustomError(def.ET_ENV, def.ENV_C, err.Error(), nil)
+	}
+	baseDb, err := db.DB()
+	if err != nil {
+		return nil, def.NewCustomError(def.ET_ENV, def.ENV_C, err.Error(), nil)
+	}
+	baseDb.SetMaxOpenConns(cfg.MaxOpen)
+	baseDb.SetMaxIdleConns(cfg.MaxIdle)
+	rtn := GromTableDao{
+		db,
+	}
+	return &rtn, nil
+}
+
+// SelectByName 一个查询示例，其他请参考：https://gorm.io/zh_CN/docs/index.html
+func (gt *GromTableDao) SelectByName(_ context.Context, name string) ([]entity.TmpTable, error) {
+	var dest []entity.TmpTable
+	gt.db.Where("name = ?", name).Find(&dest)
+	return dest, nil
+}
+
+func (gt *GromTableDao) Delay() error {
+	gt.db.Exec("select sleep(1) from dual")
+	return nil
+}
