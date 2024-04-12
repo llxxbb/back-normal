@@ -9,6 +9,7 @@ import (
 	"net/http"
 )
 
+// RequestResponse 此方法因涉及到Gin框架，因此没有封装到基础工具包中。
 func RequestResponse[T any, R any](rg *gin.RouterGroup, path string, fun func(c context.Context, p T) (R, *def.CustomError)) {
 	rg.POST(path, func(c *gin.Context) {
 		zap.L().Debug("accessed", zap.String("url", c.Request.URL.Path))
