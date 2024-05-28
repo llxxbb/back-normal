@@ -60,12 +60,12 @@
 
 ### 生成 mock 代码
 
-使用 [golang/mock](https://github.com/golang/mock),
+golang/mock 已经停止维护，推荐使用 [uber-mock](https://github.com/uber-go/mock),
 
 安装
 
 ```shell
-go install github.com/golang/mock/mockgen@v1.6.0
+go install go.uber.org/mock/mockgen@latest
 ```
 
 在 src 目录下运行
