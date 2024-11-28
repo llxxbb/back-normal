@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func routePreDefined(r *gin.Engine) {
+func RoutePreDefined(r *gin.Engine) {
 	// 用于监控
 	r.GET("/monitorDB/monitor", service.IsAlive)
 	r.GET("/monitorDB/monitor.shtml", service.IsAlive)

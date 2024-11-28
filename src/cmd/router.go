@@ -1,6 +1,7 @@
-package api
+package main
 
 import (
+	"cdel/demo/Normal/api"
 	"cdel/demo/Normal/config"
 	ginzap "github.com/gin-contrib/zap"
 	"github.com/gin-gonic/gin"
@@ -25,9 +26,9 @@ func SetupRouter(cfg *config.ProjectConfig) *gin.Engine {
 
 	// 路由信息 -----------------------------------------------
 	// 需要自行定制的路由
-	routeApp(r)
+	api.RouteApp(r)
 	// 固定的、规范性的，不要轻易变更的路由
-	routePreDefined(r)
+	api.RoutePreDefined(r)
 
 	return r
 }

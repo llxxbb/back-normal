@@ -1,7 +1,6 @@
 package main
 
 import (
-	"cdel/demo/Normal/api"
 	"cdel/demo/Normal/config"
 	"cdel/demo/Normal/internal/service/demo"
 	"cdel/demo/Normal/tool"
@@ -35,7 +34,7 @@ func main() {
 	// 初始化上下文，如数据库
 	demo.InitDemo(cfg)
 
-	r := api.SetupRouter(cfg)
+	r := SetupRouter(cfg)
 
 	// start web
 	_ = r.Run(":" + cfg.Port)

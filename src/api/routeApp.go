@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func routeApp(r *gin.Engine) {
+func RouteApp(r *gin.Engine) {
 	gDemo := r.Group("/demo")
 	{
 		gDemo.POST("/v1", demo.V1)
