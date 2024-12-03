@@ -18,7 +18,6 @@ func gormTest(t *testing.T) {
 		Config: mysql.Config{
 			User:        "dev_user",
 			Passwd:      "dev_password",
-			Net:         "tcp",
 			Addr:        "192.168.172.50:6008",
 			DBName:      "doorman",
 			Timeout:     timeout,
