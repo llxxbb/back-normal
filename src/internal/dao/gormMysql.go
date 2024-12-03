@@ -14,6 +14,8 @@ type GromTableDao struct {
 }
 
 func New(cfg *config.MysqlConfig) (*GromTableDao, *def.CustomError) {
+	cfg.Net = "tcp"
+	cfg.AllowNativePasswords = true
 	dsn := cfg.FormatDSN()
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		PrepareStmt: true,

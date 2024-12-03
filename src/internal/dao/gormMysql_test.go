@@ -9,20 +9,18 @@ import (
 )
 
 func TestGormMysql(t *testing.T) {
-	//gormTest(t)
+	gormTest(t)
 }
 
 func gormTest(t *testing.T) {
 	timeout := time.Duration(time.Duration.Milliseconds(300))
 	dao, err := New(&config.MysqlConfig{
 		Config: mysql.Config{
-			User:   "dev_user",
-			Passwd: "dev_password",
-			Net:    "tcp",
-			Addr:   "192.168.172.50:6008",
-			DBName: "doorman",
-			//Params: map[string]string{"useSSL": "false", "allowNativePasswords": "true"},
-			Params:      map[string]string{"allowNativePasswords": "true"},
+			User:        "dev_user",
+			Passwd:      "dev_password",
+			Net:         "tcp",
+			Addr:        "192.168.172.50:6008",
+			DBName:      "doorman",
 			Timeout:     timeout,
 			ReadTimeout: timeout,
 		},
