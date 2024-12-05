@@ -32,17 +32,23 @@
 
 启动文件位于 src/cmd/main.go
 
-## 编译
+## 运行 go 指令
 
-> go build ./src/...
+需要进入 src 目录下执行 go 指令， 或用 ./src/... 替换 ./...
+
+### 编译
+
+> go build ./...
 
 ## 测试
 
-> go test ./src/...
+> go test ./...
+
+去除缓存影响
+
+> go test -count=1 ./...
 
 ## 依赖包相关
-
-**注意**：需要进入 src 目录。
 
 更新依赖包
 
@@ -51,6 +57,26 @@
 整理依赖包
 
 > go mod tidy
+
+## 集成测试
+
+目录：src/test
+
+**注意**：
+
+- 集成测试需要依赖 src/test/config_test.yml 文件。
+
+- src/test/common.go 的内容可参考 src/cmd/mani.md 中的内容，用于初始化项目。
+
+忽略测试的方法：
+
+- 不提供 src/test/config_test.yml
+
+- 修改 src/test/common.go文件中的下面一行，用新值替换 "test"
+  
+  ```go
+  _ = os.Setenv("PRJ_ENV", "test") 
+  ```
 
 ## 其他说明
 
