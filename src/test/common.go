@@ -19,8 +19,8 @@ func InitTestEnv(testPath string) {
 	_ = os.Setenv("PRJ_ENV", "test")
 	_ = os.Chdir(testPath)
 	// 初始化配置, 使用嵌入的缺省配置文件
-	cfg := config.ProjectConfig{}
-	bc.FillConfig(&cfg, &cfg.BaseConfig)
+	cfg := config.New()
+	bc.FillConfig(cfg, &cfg.BaseConfig)
 	// 初始化日志
 	tool.InitLogger(cfg.LogPath, cfg.Env == bc.VAL_PRODUCT)
 	defer func(l *zap.Logger) {
@@ -32,5 +32,5 @@ func InitTestEnv(testPath string) {
 
 	// init service
 	// 初始化上下文，如数据库
-	demo.InitDemo(&cfg)
+	demo.InitDemo(cfg)
 }
