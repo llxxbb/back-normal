@@ -8,9 +8,9 @@ pinpoint:
     counterRate: 2
 
 mysql:
-  user: dev_user
-  password: dev_password
-  address: 192.168.172.50:6008
+  user: test_user
+  password: test_password
+  address: 192.168.172.24:6008
 
 redis:
   url: 192.168.192.105:27007,192.168.192.106:27007,192.168.192.107:27007,192.168.192.105:27008,192.168.192.106:27008,192.168.192.107:27008

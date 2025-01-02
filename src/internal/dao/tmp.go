@@ -37,15 +37,15 @@ func (t *tmpTableDao) SelectByName(ctx context.Context, name string) ([]entity.T
 		one := entity.TmpTable{}
 		// 注意 null 类型
 		var t1, t2 sql.NullString
-		if e = rows.Scan(&one.Id, &one.Name, &t1, &t2); e != nil {
+		if e = rows.Scan(&one.Id, &one.Domain, &t1, &t2); e != nil {
 			return nil, e
 		}
 		// 对 null 进行验证
 		if t1.Valid {
-			one.T1 = t1.String
+			one.ResourcePath = t1.String
 		}
 		if t2.Valid {
-			one.T2 = t2.String
+			one.RealUrl = t2.String
 		}
 		rtn = append(rtn, one)
 	}
@@ -55,7 +55,7 @@ func (t *tmpTableDao) SelectByName(ctx context.Context, name string) ([]entity.T
 func NewTmpDao(db *sql.DB) TmpTableDaoI {
 	dao := tmpTableDao{}
 	// Tmp table 注意参数用 ？ 替代
-	sql := "SELECT id, name, t1, t2 FROM tmp WHERE name = ? LIMIt ?"
+	sql := "SELECT rm_id, domain, resourcePath, realUrl FROM routemap WHERE rm_id = ? LIMIt ?"
 	var e error
 	dao.sqlTmpSelect, e = db.Prepare(sql)
 	if e != nil {
