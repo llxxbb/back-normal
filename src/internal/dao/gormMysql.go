@@ -7,6 +7,7 @@ import (
 	"gitlab.cdel.local/platform/go/platform-common/def"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/schema"
 )
 
 type GromTableDao struct {
@@ -18,6 +19,10 @@ func New(cfg *config.MysqlConfig) (*GromTableDao, *def.CustomError) {
 	cfg.AllowNativePasswords = true
 	dsn := cfg.FormatDSN()
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
+		NamingStrategy: schema.NamingStrategy{
+			NoLowerCase:   true, // 用于跳过小写转换, 设置为 true 则不会强行使用蛇形格式，保持定义的形式。
+			SingularTable: true,
+		},
 		PrepareStmt: true,
 	})
 	if err != nil {
