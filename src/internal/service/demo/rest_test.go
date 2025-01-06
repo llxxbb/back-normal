@@ -27,12 +27,12 @@ func TestDbSelect(t *testing.T) {
 	m.EXPECT().SelectByName(gomock.Any(), gomock.Eq("tom")).Return(
 		[]entity.TmpTable{
 			{
-				Id:   1,
-				Name: "lxb",
+				Id:           1,
+				ResourcePath: "lxb",
 			},
 			{
-				Id:   2,
-				Name: "tom",
+				Id:           2,
+				ResourcePath: "tom",
 			},
 		}, nil,
 	).Times(1)
@@ -57,8 +57,8 @@ func TestDbSelect(t *testing.T) {
 	assert.Equal(t, 2, len(des))
 	assert.Equal(t, 1, des[0].Id)
 	assert.Equal(t, 2, des[1].Id)
-	assert.Equal(t, "lxb", des[0].Name)
-	assert.Equal(t, "tom", des[1].Name)
+	assert.Equal(t, "lxb", des[0].ResourcePath)
+	assert.Equal(t, "tom", des[1].ResourcePath)
 }
 
 // will be intercepted
