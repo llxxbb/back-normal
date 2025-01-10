@@ -8,10 +8,21 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
+	"strings"
 )
 
 type GromTableDao struct {
 	db *gorm.DB
+}
+
+// CustomNamingStrategy 自定义 NamingStrategy
+type CustomNamingStrategy struct {
+	schema.NamingStrategy
+}
+
+// ColumnName 实现 ColumnName 方法，将 Go 结构体字段名转换为数据库字段名
+func (ns CustomNamingStrategy) ColumnName(_, column string) string {
+	return strings.ToLower(column[:1]) + column[1:]
 }
 
 func New(cfg *config.MysqlConfig) (*GromTableDao, *def.CustomError) {
@@ -19,10 +30,13 @@ func New(cfg *config.MysqlConfig) (*GromTableDao, *def.CustomError) {
 	cfg.AllowNativePasswords = true
 	dsn := cfg.FormatDSN()
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
-		NamingStrategy: schema.NamingStrategy{
-			NoLowerCase:   true, // 用于跳过小写转换, 设置为 true 则不会强行使用蛇形格式，保持定义的形式。
-			SingularTable: true,
-		},
+		// 结构与数据库字段仅首字母不同
+		NamingStrategy: CustomNamingStrategy{},
+		// 如果数据库字段与结构体字段完全一致时，使用以下配置
+		//NamingStrategy: schema.NamingStrategy{
+		//	NoLowerCase:   true, // 用于跳过小写转换, 设置为 true 则不会强行使用蛇形格式，保持定义的形式。
+		//	SingularTable: true,
+		//},
 		PrepareStmt: true,
 	})
 	if err != nil {
