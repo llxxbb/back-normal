@@ -1,6 +1,3 @@
 **/*.exe
-config_product.yml
-src/.idea
+src/cmd/config_product.yml
 .idea
-.vscode
-/main
