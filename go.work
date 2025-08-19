@@ -4,5 +4,5 @@ toolchain go1.23.4
 
 use ./src
 
-// replace gitlab.cdel.local/platform/go/platform-common v0.1.2 => E:\tools\platform\go\platform-commo
+// replace github.com/llxxbb/platform-common v0.1.2 => E:\tools\platform\go\platform-commo
 //replace github.com/llxxbb/go-BaseConfig v0.1.4 => /mnt/e/github/go-BaseConfig/

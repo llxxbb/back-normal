@@ -1,8 +1,9 @@
 package main
 
 import (
-	"cdel/demo/Normal/api"
-	"cdel/demo/Normal/config"
+	"back/demo/api"
+	"back/demo/config"
+
 	ginzap "github.com/gin-contrib/zap"
 	"github.com/gin-gonic/gin"
 	ppgin "github.com/pinpoint-apm/pinpoint-go-agent/plugin/gin"

@@ -1,14 +1,15 @@
 package demo
 
 import (
-	"cdel/demo/Normal/internal/entity"
+	"back/demo/internal/entity"
 	"context"
-	"github.com/goccy/go-json"
 	"net/http"
 
-	"gitlab.cdel.local/platform/go/platform-common/access"
-	"gitlab.cdel.local/platform/go/platform-common/def"
-	"gitlab.cdel.local/platform/go/platform-common/old"
+	"github.com/goccy/go-json"
+
+	"github.com/llxxbb/platform-common/access"
+	"github.com/llxxbb/platform-common/def"
+	"github.com/llxxbb/platform-common/old"
 	"go.uber.org/zap"
 
 	"github.com/gin-gonic/gin"

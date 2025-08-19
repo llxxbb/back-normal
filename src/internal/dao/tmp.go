@@ -1,7 +1,7 @@
 package dao
 
 import (
-	"cdel/demo/Normal/internal/entity"
+	"back/demo/internal/entity"
 	"context"
 	"database/sql"
 )

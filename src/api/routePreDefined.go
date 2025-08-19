@@ -1,7 +1,8 @@
 package api
 
 import (
-	"cdel/demo/Normal/internal/service"
+	"back/demo/internal/service"
+
 	"github.com/gin-gonic/gin"
 )
 

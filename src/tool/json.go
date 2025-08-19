@@ -2,7 +2,7 @@ package tool
 
 import (
 	"github.com/goccy/go-json"
-	"gitlab.cdel.local/platform/go/platform-common/def"
+	"github.com/llxxbb/platform-common/def"
 	"go.uber.org/zap"
 )
 

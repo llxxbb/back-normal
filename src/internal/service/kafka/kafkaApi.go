@@ -6,8 +6,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"gitlab.cdel.local/platform/go/platform-common/access"
-	"gitlab.cdel.local/platform/go/platform-common/def"
+	"github.com/llxxbb/platform-common/access"
+	"github.com/llxxbb/platform-common/def"
 	"go.uber.org/zap"
 )
 

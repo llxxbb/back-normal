@@ -2,7 +2,7 @@
 package extend
 
 import (
-	"cdel/demo/Normal/internal/service/demo/inheritance"
+	"back/demo/internal/service/demo/inheritance"
 	"fmt"
 )
 

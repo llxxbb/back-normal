@@ -1,9 +1,10 @@
 package dao
 
 import (
-	"cdel/demo/Normal/internal/entity"
-	"cdel/demo/Normal/tool"
+	"back/demo/internal/entity"
+	"back/demo/tool"
 	"context"
+
 	"github.com/go-redis/cache/v9"
 	"github.com/redis/go-redis/v9"
 )

@@ -1,8 +1,9 @@
 package demo
 
 import (
-	"cdel/demo/Normal/config"
-	"cdel/demo/Normal/internal/dao"
+	"back/demo/config"
+	"back/demo/internal/dao"
+
 	"github.com/go-resty/resty/v2"
 )
 

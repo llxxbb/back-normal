@@ -1,9 +1,9 @@
 package api
 
 import (
-	"cdel/demo/Normal/internal/service/demo"
-	"cdel/demo/Normal/internal/service/kafka"
-	"cdel/demo/Normal/tool"
+	"back/demo/internal/service/demo"
+	"back/demo/internal/service/kafka"
+	"back/demo/tool"
 
 	"github.com/gin-gonic/gin"
 )

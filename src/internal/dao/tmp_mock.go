@@ -5,7 +5,7 @@
 package dao
 
 import (
-	entity "cdel/demo/Normal/internal/entity"
+	entity "back/demo/internal/entity"
 	context "context"
 	reflect "reflect"
 

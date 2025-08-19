@@ -1,7 +1,7 @@
 package config
 
 import (
-	"cdel/demo/Normal/tool"
+	"back/demo/tool"
 
 	bc "github.com/llxxbb/go-BaseConfig/config"
 	"go.uber.org/zap"

@@ -1,7 +1,7 @@
 package kafka
 
 import (
-	"cdel/demo/Normal/config"
+	"back/demo/config"
 	"context"
 	"encoding/json"
 	"fmt"

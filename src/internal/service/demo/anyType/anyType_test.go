@@ -1,7 +1,7 @@
 package anyType
 
 import (
-	"cdel/demo/Normal/internal/service/demo/inheritance"
+	"back/demo/internal/service/demo/inheritance"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

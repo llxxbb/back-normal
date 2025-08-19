@@ -1,7 +1,7 @@
 package service
 
 import (
-	"cdel/demo/Normal/config"
+	"back/demo/config"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

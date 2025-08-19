@@ -1,10 +1,10 @@
 package main
 
 import (
-	"cdel/demo/Normal/config"
-	"cdel/demo/Normal/internal/service/demo"
-	"cdel/demo/Normal/internal/service/kafka"
-	"cdel/demo/Normal/tool"
+	"back/demo/config"
+	"back/demo/internal/service/demo"
+	"back/demo/internal/service/kafka"
+	"back/demo/tool"
 	_ "embed"
 
 	bc "github.com/llxxbb/go-BaseConfig/config"

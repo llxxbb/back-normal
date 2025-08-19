@@ -1,9 +1,10 @@
 package some
 
 import (
-	"cdel/demo/Normal/test"
-	"github.com/stretchr/testify/assert"
+	"back/demo/test"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestAuthCheck(t *testing.T) {

@@ -1,4 +1,4 @@
-module cdel/demo/Normal
+module back/demo
 
 go 1.23.0
 
@@ -6,6 +6,7 @@ toolchain go1.23.4
 
 require (
 	github.com/DATA-DOG/go-sqlmock v1.5.2 // db mock
+	github.com/IBM/sarama v1.45.2
 	github.com/gin-contrib/zap v1.1.5 // zap middleware for Gin
 	github.com/gin-gonic/gin v1.10.1 // web framework
 	github.com/go-redis/cache/v9 v9.0.0
@@ -13,8 +14,10 @@ require (
 	github.com/go-sql-driver/mysql v1.9.3
 	github.com/goccy/go-json v0.10.5 // fast json, replace the "encoding/json"
 	github.com/golang/mock v1.6.0 // common mock, before mock, use mockgen to generate code
+	github.com/google/uuid v1.6.0
 	github.com/h2non/gock v1.2.0 // http mock, intercept request of http.Client
 	github.com/llxxbb/go-BaseConfig v0.2.0
+	github.com/llxxbb/platform-common v1.0.0
 	github.com/pinpoint-apm/pinpoint-go-agent v1.4.7
 	github.com/pinpoint-apm/pinpoint-go-agent/plugin/gin v1.4.4
 	github.com/pinpoint-apm/pinpoint-go-agent/plugin/goredisv9 v1.4.4
@@ -22,7 +25,6 @@ require (
 	github.com/pinpoint-apm/pinpoint-go-agent/plugin/mysql v1.4.4
 	github.com/redis/go-redis/v9 v9.12.1
 	github.com/stretchr/testify v1.10.0 // test framework, include assert, mock etc.
-	gitlab.cdel.local/platform/go/platform-common v0.9.3
 	go.uber.org/zap v1.27.0 // Blazing fast, structured, leveled logging
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // writing logs to rolling files
 	gorm.io/driver/mysql v1.6.0 // gorm mysql driver
@@ -34,7 +36,6 @@ exclude google.golang.org/genproto v0.0.0-20220519153652-3a47de7e79bd
 
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
-	github.com/IBM/sarama v1.45.2 // indirect
 	github.com/bytedance/sonic v1.14.0 // indirect
 	github.com/bytedance/sonic/loader v0.3.0 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
@@ -53,10 +54,9 @@ require (
 	github.com/go-playground/validator/v10 v10.27.0 // indirect
 	github.com/go-viper/mapstructure/v2 v2.4.0 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
-	github.com/golang/snappy v0.0.4 // indirect
-	github.com/google/uuid v1.6.0 // indirect
+	github.com/golang/snappy v1.0.0 // indirect
 	github.com/h2non/parth v0.0.0-20190131123155-b4df798d6542 // indirect
-	github.com/hashicorp/errwrap v1.0.0 // indirect
+	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/hashicorp/go-uuid v1.0.3 // indirect
 	github.com/hashicorp/golang-lru v1.0.2 // indirect
@@ -82,7 +82,7 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/power-devops/perfstat v0.0.0-20240221224432-82ca36839d55 // indirect
-	github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475 // indirect
+	github.com/rcrowley/go-metrics v0.0.0-20250401214520-65e299d6c5c9 // indirect
 	github.com/sagikazarmark/locafero v0.10.0 // indirect
 	github.com/shirou/gopsutil/v3 v3.24.5 // indirect
 	github.com/shoenig/go-m1cpu v0.1.6 // indirect

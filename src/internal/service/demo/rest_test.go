@@ -1,21 +1,22 @@
 package demo
 
 import (
-	"cdel/demo/Normal/internal/dao"
-	"cdel/demo/Normal/internal/entity"
-	"cdel/demo/Normal/tool"
-	"github.com/gin-gonic/gin"
-	"github.com/goccy/go-json"
+	"back/demo/internal/dao"
+	"back/demo/internal/entity"
+	"back/demo/tool"
 	"io"
 	"net/http"
 	"testing"
 
+	"github.com/gin-gonic/gin"
+	"github.com/goccy/go-json"
+
 	"github.com/go-resty/resty/v2"
 	"github.com/golang/mock/gomock"
 	"github.com/h2non/gock"
+	"github.com/llxxbb/platform-common/access"
+	"github.com/llxxbb/platform-common/old"
 	"github.com/stretchr/testify/assert"
-	"gitlab.cdel.local/platform/go/platform-common/access"
-	"gitlab.cdel.local/platform/go/platform-common/old"
 )
 
 // used for TestDbSelect --------------------------

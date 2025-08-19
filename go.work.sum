@@ -760,6 +760,13 @@ github.com/kr/logfmt v0.0.0-20140226030751-b84e30acd515 h1:T+h1c/A9Gawja4Y9mFVWj
 github.com/kr/pty v1.1.1 h1:VkoXIwSboBpnk99O/KFauAEILuNHv5DVFKZMBN/gUgw=
 github.com/llxxbb/go-BaseConfig v0.1.0 h1:5mGpVhh7tayRxMZTNacSFV/620RRvd5/8+73+hurW2A=
 github.com/llxxbb/go-BaseConfig v0.1.0/go.mod h1:h8RQmvlV0smi7z20g26hQ76QqHlZ3DFcB4fxzxoUcQc=
+github.com/llxxbb/platform-common v0.1.0 h1:vxfmBozMT34t9j1ldo1DzH1ATXwQqnMce4WHv9B+alE=
+github.com/llxxbb/platform-common v0.5.0 h1:YURfWmRSzxZk6m8ZUV4xmtF03fmupr+Y52m15UhP+AU=
+github.com/llxxbb/platform-common v0.5.0/go.mod h1:KwTBON/gPJdnUGMePyBrKYuT7jBdzH5ZUKOedZD25SM=
+github.com/llxxbb/platform-common v0.9.1 h1:/Lz99YJUILJWbHJT51bYDNUZaXCDTMSVErjqr8kwhXo=
+github.com/llxxbb/platform-common v0.9.1/go.mod h1:OAd1br9oi3qGLH0S7urHaBrofcBlHNdRov9JFseUXRo=
+github.com/llxxbb/platform-common v1.0.0 h1:xShNK87ZRgYHsXUDYNqMB+vOT1ZbQQsDfNREJCa1vZI=
+github.com/llxxbb/platform-common v1.0.0/go.mod h1:9fdWY/0kKHtOnrSbh8vMVHoUT4z1NzHBuYkTVRl5aSI=
 github.com/lyft/protoc-gen-star/v2 v2.0.3 h1:/3+/2sWyXeMLzKd1bX+ixWKgEMsULrIivpDsuaF441o=
 github.com/lyft/protoc-gen-star/v2 v2.0.3/go.mod h1:amey7yeodaJhXSbf/TlLvWiqQfLOSpEk//mLlc+axEk=
 github.com/magiconair/properties v1.8.7 h1:IeQXZAiQcpL9mgcAe1Nu6cX9LLw6ExEHKjN0VQdvPDY=
@@ -870,11 +877,6 @@ github.com/yusufpapurcu/wmi v1.2.2/go.mod h1:SBZ9tNy3G9/m5Oi98Zks0QjeHVDvuK0qfxQ
 github.com/zeebo/errs v1.4.0/go.mod h1:sgbWHsvVuTPHcqJJGQ1WhI5KbWlHYz+2+2C/LSEtCw4=
 github.com/zeebo/xxh3 v1.0.2 h1:xZmwmqxHZA8AI603jOQ0tMqmBr9lPeFwGg6d+xy9DC0=
 github.com/zeebo/xxh3 v1.0.2/go.mod h1:5NWz9Sef7zIDm2JHfFlcQvNekmcEl9ekUZQQKCYaDcA=
-gitlab.cdel.local/platform/go/platform-common v0.1.0 h1:vxfmBozMT34t9j1ldo1DzH1ATXwQqnMce4WHv9B+alE=
-gitlab.cdel.local/platform/go/platform-common v0.5.0 h1:YURfWmRSzxZk6m8ZUV4xmtF03fmupr+Y52m15UhP+AU=
-gitlab.cdel.local/platform/go/platform-common v0.5.0/go.mod h1:KwTBON/gPJdnUGMePyBrKYuT7jBdzH5ZUKOedZD25SM=
-gitlab.cdel.local/platform/go/platform-common v0.9.1 h1:/Lz99YJUILJWbHJT51bYDNUZaXCDTMSVErjqr8kwhXo=
-gitlab.cdel.local/platform/go/platform-common v0.9.1/go.mod h1:OAd1br9oi3qGLH0S7urHaBrofcBlHNdRov9JFseUXRo=
 go.einride.tech/aip v0.66.0 h1:XfV+NQX6L7EOYK11yoHHFtndeaWh3KbD9/cN/6iWEt8=
 go.einride.tech/aip v0.66.0/go.mod h1:qAhMsfT7plxBX+Oy7Huol6YUvZ0ZzdUz26yZsQwfl1M=
 go.etcd.io/etcd/api/v3 v3.5.6 h1:Cy2qx3npLcYqTKqGJzMypnMv2tiRyifZJ17BlWIWA7A=

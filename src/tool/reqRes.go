@@ -2,12 +2,13 @@ package tool
 
 import (
 	"context"
-	"github.com/gin-gonic/gin"
-	"gitlab.cdel.local/platform/go/platform-common/access"
-	"gitlab.cdel.local/platform/go/platform-common/def"
-	"gitlab.cdel.local/platform/go/platform-common/old"
-	"go.uber.org/zap"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"github.com/llxxbb/platform-common/access"
+	"github.com/llxxbb/platform-common/def"
+	"github.com/llxxbb/platform-common/old"
+	"go.uber.org/zap"
 )
 
 // RequestResponse 此方法因涉及到Gin框架，因此没有封装到基础工具包中。

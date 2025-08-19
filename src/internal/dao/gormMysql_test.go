@@ -1,11 +1,12 @@
 package dao
 
 import (
-	"cdel/demo/Normal/config"
-	"github.com/go-sql-driver/mysql"
-	"github.com/stretchr/testify/assert"
+	"back/demo/config"
 	"testing"
 	"time"
+
+	"github.com/go-sql-driver/mysql"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGormMysql(t *testing.T) {

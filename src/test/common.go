@@ -1,13 +1,14 @@
 package test
 
 import (
-	"cdel/demo/Normal/config"
-	"cdel/demo/Normal/internal/service/demo"
-	"cdel/demo/Normal/tool"
+	"back/demo/config"
+	"back/demo/internal/service/demo"
+	"back/demo/tool"
 	"fmt"
+	"os"
+
 	bc "github.com/llxxbb/go-BaseConfig/config"
 	"go.uber.org/zap"
-	"os"
 )
 
 func InitTestEnv(testPath string) {

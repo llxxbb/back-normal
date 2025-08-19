@@ -1,14 +1,15 @@
 package dao
 
 import (
-	"cdel/demo/Normal/config"
-	"cdel/demo/Normal/internal/entity"
+	"back/demo/config"
+	"back/demo/internal/entity"
 	"context"
-	"gitlab.cdel.local/platform/go/platform-common/def"
+	"strings"
+
+	"github.com/llxxbb/platform-common/def"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
-	"strings"
 )
 
 type GromTableDao struct {
