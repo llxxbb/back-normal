@@ -3,6 +3,7 @@ package main
 import (
 	"cdel/demo/Normal/config"
 	"cdel/demo/Normal/internal/service/demo"
+	"cdel/demo/Normal/internal/service/kafka"
 	"cdel/demo/Normal/tool"
 	_ "embed"
 
@@ -33,6 +34,11 @@ func main() {
 	cfg.PinPoint.InitPinPoint(cfg.ProjectName, cfg.Host)
 	// 初始化上下文，如数据库
 	demo.InitDemo(cfg)
+
+	// 初始化 Kafka 服务
+	if err := kafka.InitKafka(cfg); err != nil {
+		zap.L().Fatal("Failed to initialize Kafka service", zap.Error(err))
+	}
 
 	r := SetupRouter(cfg)
 

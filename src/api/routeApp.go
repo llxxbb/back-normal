@@ -2,7 +2,9 @@ package api
 
 import (
 	"cdel/demo/Normal/internal/service/demo"
+	"cdel/demo/Normal/internal/service/kafka"
 	"cdel/demo/Normal/tool"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -24,5 +26,12 @@ func RouteApp(r *gin.Engine) {
 	gPinPoint := r.Group("/pp")
 	{
 		gPinPoint.GET("/app2", demo.App2)
+	}
+
+	// Kafka 相关接口
+	gKafka := r.Group("/kafka")
+	{
+		gKafka.POST("/send", kafka.SendKafkaMessage) // 发送消息
+		gKafka.GET("/status", kafka.GetKafkaStatus)  // 获取状态
 	}
 }

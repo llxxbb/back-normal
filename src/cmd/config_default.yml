@@ -40,3 +40,7 @@ redis:
   writeTimeout: 1500ms
   minIdleConns: 2
   ttl: 3s
+
+kafka:
+  topic: test-lxb
+  group_id: back-normal-group

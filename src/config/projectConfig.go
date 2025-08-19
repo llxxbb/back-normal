@@ -17,6 +17,7 @@ type ProjectConfig struct {
 	App2     tool.RpcConfig
 	PinPoint tool.PinPointConfig
 	Redis    tool.RedisConfig
+	Kafka    KafkaConfig
 }
 
 func New() *ProjectConfig {
@@ -32,6 +33,7 @@ func (c *ProjectConfig) AppendFieldMap(fm map[string]string) {
 	c.App2.AppendFieldMap(fm)
 	c.Redis.AppendFieldMap(fm)
 	c.PinPoint.AppendFieldMap(fm)
+	c.Kafka.AppendFieldMap(fm)
 }
 
 func (c *ProjectConfig) Print() {
@@ -42,5 +44,6 @@ func (c *ProjectConfig) Print() {
 	c.App2.Print()
 	c.Redis.Print()
 	c.PinPoint.Print()
+	c.Kafka.Print()
 	zap.L().Info("++++++++++++++ config info end: ++++++++++++++")
 }
