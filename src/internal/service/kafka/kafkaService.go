@@ -5,7 +5,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"time"
 
 	"github.com/IBM/sarama"
 	"go.uber.org/zap"
@@ -17,12 +16,6 @@ type KafkaService struct {
 	config   *config.KafkaConfig
 	ctx      context.Context
 	cancel   context.CancelFunc
-}
-
-type Message struct {
-	ID      string    `json:"id"`
-	Content string    `json:"content"`
-	Time    time.Time `json:"time"`
 }
 
 // NewKafkaService 创建 Kafka 服务实例
