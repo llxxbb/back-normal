@@ -2,13 +2,14 @@ package kafka
 
 import (
 	"back/demo/config"
+	"back/demo/tool"
 	"sync"
 
 	"go.uber.org/zap"
 )
 
 var (
-	kafkaService *KafkaService
+	kafkaService *tool.KafkaService[Message]
 	once         sync.Once
 )
 
@@ -16,20 +17,22 @@ var (
 func InitKafka(cfg *config.ProjectConfig) error {
 	var err error
 	once.Do(func() {
-		kafkaService, err = NewKafkaService(&cfg.Kafka)
+		kafkaService, err = tool.NewKafkaService[Message](&cfg.Kafka)
 		if err != nil {
 			zap.L().Error("Failed to initialize Kafka service", zap.Error(err))
 			return
 		}
 
 		// 启动消费者
-		err = kafkaService.StartConsumer(nil, func(msg *Message) error {
-			zap.L().Info("Processing message",
-				zap.String("id", msg.ID),
-				zap.String("content", msg.Content),
-				zap.Time("time", msg.Time),
-			)
-			return nil
+		err = kafkaService.StartConsumer(nil, &consumerGroupHandler[Message]{
+			messageHandler: func(msg Message) error {
+				zap.L().Info("Processing message",
+					zap.String("id", msg.ID),
+					zap.String("content", msg.Content),
+					zap.Time("time", msg.Time),
+				)
+				return nil
+			},
 		})
 		if err != nil {
 			zap.L().Error("Failed to start Kafka consumer", zap.Error(err))
@@ -43,7 +46,7 @@ func InitKafka(cfg *config.ProjectConfig) error {
 }
 
 // GetKafkaService 获取 Kafka 服务实例
-func GetKafkaService() *KafkaService {
+func GetKafkaService() *tool.KafkaService[Message] {
 	return kafkaService
 }
 

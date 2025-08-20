@@ -7,20 +7,20 @@ import (
 	"go.uber.org/zap"
 )
 
-// consumerGroupHandler 消费者组处理器
-type consumerGroupHandler struct {
-	messageHandler func(*Message) error
+// consumerGroupHandler 泛型消费者组处理器
+type consumerGroupHandler[T any] struct {
+	messageHandler func(T) error
 }
 
-func (h *consumerGroupHandler) Setup(_ sarama.ConsumerGroupSession) error {
+func (h *consumerGroupHandler[T]) Setup(_ sarama.ConsumerGroupSession) error {
 	return nil
 }
 
-func (h *consumerGroupHandler) Cleanup(_ sarama.ConsumerGroupSession) error {
+func (h *consumerGroupHandler[T]) Cleanup(_ sarama.ConsumerGroupSession) error {
 	return nil
 }
 
-func (h *consumerGroupHandler) ConsumeClaim(session sarama.ConsumerGroupSession, claim sarama.ConsumerGroupClaim) error {
+func (h *consumerGroupHandler[T]) ConsumeClaim(session sarama.ConsumerGroupSession, claim sarama.ConsumerGroupClaim) error {
 	for {
 		select {
 		case message := <-claim.Messages():
@@ -31,7 +31,7 @@ func (h *consumerGroupHandler) ConsumeClaim(session sarama.ConsumerGroupSession,
 			)
 
 			// 解析消息
-			var msg Message
+			var msg T
 			if err := json.Unmarshal(message.Value, &msg); err != nil {
 				zap.L().Error("Failed to unmarshal message", zap.Error(err))
 				session.MarkMessage(message, "")
@@ -39,7 +39,7 @@ func (h *consumerGroupHandler) ConsumeClaim(session sarama.ConsumerGroupSession,
 			}
 
 			// 处理消息
-			if err := h.messageHandler(&msg); err != nil {
+			if err := h.messageHandler(msg); err != nil {
 				zap.L().Error("Failed to handle message", zap.Error(err))
 			}
 

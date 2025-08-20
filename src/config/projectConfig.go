@@ -17,7 +17,7 @@ type ProjectConfig struct {
 	App2     tool.RpcConfig
 	PinPoint tool.PinPointConfig
 	Redis    tool.RedisConfig
-	Kafka    KafkaConfig
+	Kafka    tool.KafkaConfig
 }
 
 func New() *ProjectConfig {

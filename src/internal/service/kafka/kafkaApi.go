@@ -54,7 +54,7 @@ func SendKafkaMessage(c *gin.Context) {
 	}
 
 	// 发送消息
-	if err := kafkaService.SendMessage(req.Topic, message); err != nil {
+	if err := kafkaService.SendMessage(req.Topic, *message); err != nil {
 		zap.L().Error("Failed to send Kafka message", zap.Error(err))
 		c.JSON(http.StatusOK, access.GetErrorResultD[SendMessageResponse](def.ET_ENV, def.E_ENV.Code, "Failed to send message: "+err.Error(), nil))
 		return
@@ -67,6 +67,7 @@ func SendKafkaMessage(c *gin.Context) {
 		Status:    "sent",
 		Time:      message.Time.Format(time.RFC3339),
 	}
+	IncrementSentCount()
 
 	c.JSON(http.StatusOK, access.GetSuccessResult(response))
 }
