@@ -39,10 +39,10 @@ func SendKafkaMessage(c *gin.Context) {
 		return
 	}
 
-	// 获取 Kafka 服务
-	kafkaService := GetKafkaService()
-	if kafkaService == nil {
-		c.JSON(http.StatusOK, access.GetErrorResultD[SendMessageResponse](def.ET_ENV, def.E_ENV.Code, "Kafka service not initialized", nil))
+	// 获取 Kafka 生产者
+	kafkaProducer := GetKafkaProducer()
+	if kafkaProducer == nil {
+		c.JSON(http.StatusOK, access.GetErrorResultD[SendMessageResponse](def.ET_ENV, def.E_ENV.Code, "Kafka producer not initialized", nil))
 		return
 	}
 
@@ -54,7 +54,7 @@ func SendKafkaMessage(c *gin.Context) {
 	}
 
 	// 发送消息
-	if err := kafkaService.SendMessage(req.Topic, *message); err != nil {
+	if err := kafkaProducer.SendMessage(req.Topic, *message); err != nil {
 		zap.L().Error("Failed to send Kafka message", zap.Error(err))
 		c.JSON(http.StatusOK, access.GetErrorResultD[SendMessageResponse](def.ET_ENV, def.E_ENV.Code, "Failed to send message: "+err.Error(), nil))
 		return

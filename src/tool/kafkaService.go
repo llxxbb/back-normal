@@ -36,19 +36,14 @@ func (c *KafkaConfig) GetBrokers() []string {
 	return strings.Split(c.Brokers, ",")
 }
 
-// KafkaService 泛型 Kafka 服务
-type KafkaService[T any] struct {
+// KafkaProducer 泛型 Kafka 生产者
+type KafkaProducer[T any] struct {
 	producer sarama.SyncProducer
-	consumer sarama.ConsumerGroup
 	config   KafkaConfig
-	ctx      context.Context
-	cancel   context.CancelFunc
 }
 
-// NewKafkaService 创建 Kafka 服务实例
-func NewKafkaService[T any](cfg *KafkaConfig) (*KafkaService[T], error) {
-	ctx, cancel := context.WithCancel(context.Background())
-
+// NewKafkaProducer 创建 Kafka 生产者实例
+func NewKafkaProducer[T any](cfg *KafkaConfig) (*KafkaProducer[T], error) {
 	// 生产者配置
 	producerConfig := sarama.NewConfig()
 	producerConfig.Producer.RequiredAcks = sarama.WaitForAll
@@ -57,34 +52,19 @@ func NewKafkaService[T any](cfg *KafkaConfig) (*KafkaService[T], error) {
 
 	producer, err := sarama.NewSyncProducer(cfg.GetBrokers(), producerConfig)
 	if err != nil {
-		cancel()
 		return nil, fmt.Errorf("failed to create producer: %w", err)
 	}
 
-	// 消费者配置
-	consumerConfig := sarama.NewConfig()
-	consumerConfig.Consumer.Offsets.Initial = sarama.OffsetNewest
-
-	consumer, err := sarama.NewConsumerGroup(cfg.GetBrokers(), cfg.GroupID, consumerConfig)
-	if err != nil {
-		producer.Close()
-		cancel()
-		return nil, fmt.Errorf("failed to create consumer: %w", err)
-	}
-
-	return &KafkaService[T]{
+	return &KafkaProducer[T]{
 		producer: producer,
-		consumer: consumer,
 		config:   *cfg,
-		ctx:      ctx,
-		cancel:   cancel,
 	}, nil
 }
 
 // SendMessage 发送消息
-func (k *KafkaService[T]) SendMessage(topic string, message T) error {
+func (p *KafkaProducer[T]) SendMessage(topic string, message T) error {
 	if topic == "" {
-		topic = k.config.Topic
+		topic = p.config.Topic
 	}
 
 	messageBytes, err := json.Marshal(message)
@@ -97,7 +77,7 @@ func (k *KafkaService[T]) SendMessage(topic string, message T) error {
 		Value: sarama.StringEncoder(messageBytes),
 	}
 
-	partition, offset, err := k.producer.SendMessage(kafkaMessage)
+	partition, offset, err := p.producer.SendMessage(kafkaMessage)
 	if err != nil {
 		return fmt.Errorf("failed to send message: %w", err)
 	}
@@ -106,19 +86,54 @@ func (k *KafkaService[T]) SendMessage(topic string, message T) error {
 	return nil
 }
 
+// Close 关闭生产者
+func (p *KafkaProducer[T]) Close() error {
+	return p.producer.Close()
+}
+
+// KafkaConsumer 泛型 Kafka 消费者
+type KafkaConsumer[T any] struct {
+	consumer sarama.ConsumerGroup
+	config   KafkaConfig
+	ctx      context.Context
+	cancel   context.CancelFunc
+}
+
+// NewKafkaConsumer 创建 Kafka 消费者实例
+func NewKafkaConsumer[T any](cfg *KafkaConfig) (*KafkaConsumer[T], error) {
+	ctx, cancel := context.WithCancel(context.Background())
+
+	// 消费者配置
+	consumerConfig := sarama.NewConfig()
+	consumerConfig.Consumer.Offsets.Initial = sarama.OffsetNewest
+
+	consumer, err := sarama.NewConsumerGroup(cfg.GetBrokers(), cfg.GroupID, consumerConfig)
+	if err != nil {
+		cancel()
+		return nil, fmt.Errorf("failed to create consumer: %w", err)
+	}
+
+	return &KafkaConsumer[T]{
+		consumer: consumer,
+		config:   *cfg,
+		ctx:      ctx,
+		cancel:   cancel,
+	}, nil
+}
+
 // StartConsumer 启动消费者
-func (k *KafkaService[T]) StartConsumer(topics []string, handler sarama.ConsumerGroupHandler) error {
+func (c *KafkaConsumer[T]) StartConsumer(topics []string, handler sarama.ConsumerGroupHandler) error {
 	if len(topics) == 0 {
-		topics = []string{k.config.Topic}
+		topics = []string{c.config.Topic}
 	}
 
 	go func() {
 		for {
-			err := k.consumer.Consume(k.ctx, topics, handler)
+			err := c.consumer.Consume(c.ctx, topics, handler)
 			if err != nil {
 				zap.L().Error("Consumer error", zap.Error(err))
 			}
-			if k.ctx.Err() != nil {
+			if c.ctx.Err() != nil {
 				return
 			}
 		}
@@ -128,18 +143,8 @@ func (k *KafkaService[T]) StartConsumer(topics []string, handler sarama.Consumer
 	return nil
 }
 
-// Close 关闭服务
-func (k *KafkaService[T]) Close() error {
-	k.cancel()
-	var errs []error
-	if err := k.producer.Close(); err != nil {
-		errs = append(errs, err)
-	}
-	if err := k.consumer.Close(); err != nil {
-		errs = append(errs, err)
-	}
-	if len(errs) > 0 {
-		return fmt.Errorf("close errors: %v", errs)
-	}
-	return nil
+// Close 关闭消费者
+func (c *KafkaConsumer[T]) Close() error {
+	c.cancel()
+	return c.consumer.Close()
 }
